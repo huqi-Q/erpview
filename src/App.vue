@@ -1,13 +1,13 @@
 <template>
-  <div id="app">
-    <el-container style="height:100%">
-      <el-header height="60px">ERP管理系统</el-header>
-      <el-header height="60px" id="admintp">admin</el-header>
+  <div id="app" class="homeWrap">
+    <el-container style="height: 100%;">
+      <el-header style="height: 80px; position: fixed; z-index: 1; width: 100%">ERP管理系统</el-header>
+<!--      <el-header height="60px" id="admintp">admin</el-header>-->
 
-      <el-container>
-        <el-aside style="width: 190px">
+      <el-container style="padding-top: 80px; height: 100%;">
+        <el-aside style="width: 240px;">
           <!-- 左侧菜单-->
-          <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu default-active="0" class="el-menu-vertical-demo" background-color="white" text-color="black" active-text-color="#ffd04b">
             <el-menu-item index="1">
               <i class="el-icon-menu"></i>
               <span slot="title">首页</span>
@@ -20,7 +20,7 @@
               <el-submenu :index="childmenu.id+''" v-for="childmenu in parentmenu.childMenu">
                 <template #title>{{childmenu.name}}</template>
                 <el-menu-item-group>
-                  <el-menu-item  @click="addTab(childmenu1.name,childmenu1.linkUrl)" :index="childmenu1.id+''" v-for="childmenu1 in childmenu.childMenu">
+                  <el-menu-item  @click="addTab(childmenu1.name,childmenu1.linkurl)" :index="childmenu1.id+''" v-for="childmenu1 in childmenu.childMenu">
                     <i :class="childmenu1.iconUrl"></i>{{childmenu1.name}}
                   </el-menu-item>
                 </el-menu-item-group>
@@ -28,7 +28,7 @@
             </el-submenu>
           </el-menu>
         </el-aside>
-        <el-main>
+        <el-main >
 
           <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
             <el-tab-pane v-for="(item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
@@ -46,11 +46,7 @@
 </template>
 
 <script>
-import UserList from "./components/view/UserList";
-import RoleList from "./components/view/RoleList";
-import MenuList from "./components/view/MenuList";
-import PerList from "./components/view/PerList";
-import Welcome from "./components/view/Welcome";
+import ProcessList from "./components/view/ProcessList";
 
 export default {
   name: 'app',
@@ -116,31 +112,35 @@ export default {
     this.getmenudata();
   },
   components:{
-    UserList,RoleList,MenuList,PerList,Welcome
+    UserList,RoleList,ProcessList,PerList,Welcome
   }
 }
 </script>
 
 
 <style scoped>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
 
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 100%;
+    min-height: 100%;
+  }
+  .el-header, .el-footer {
+    background-color: white;
+    color: deepskyblue;
+    border-bottom: 1px deepskyblue solid;
     line-height: 60px;
 
   }
 
   .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-
-
+    background-color: white;
+    color: deepskyblue;
   }
 
   .el-main {
-    background-color: #E9EEF3;
-    color: #333;
+    background-color: white;
+    color: deepskyblue;
+    border-left: 1px deepskyblue solid;
     text-align: center;
 
   }
