@@ -1,15 +1,13 @@
 <template>
   <div>
-
     <!--  条件查询-->
-    <el-form :inline="true">
+    <el-form v-model="productFrom" ref="productFrom"  :inline="true">
       <el-form-item label="请选择产品I级分类">
         <el-select v-model="value" placeholder="请选择">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="firstKindId"
+            :label="firstKindName"
+            :value="firstKindId">
           </el-option>
         </el-select>
       </el-form-item>
@@ -20,7 +18,7 @@
         <el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>
       </el-form-item>
       <el-form-item label="请选择产品">
-        <el-input placeholder="请输入备注" clearable v-model="remark"></el-input>
+        <el-input placeholder="请输入备注" clearable v-model="productName"></el-input>
       </el-form-item>
       <el-form-item label="请选择工序设计单状态">
         <el-input placeholder="请输入备注" clearable v-model="remark"></el-input>
@@ -28,7 +26,7 @@
       <el-form-item label="请输入登记时间">
         <div class="block">
           <el-date-picker
-            v-model="value2"
+            v-model="registerTime"
             type="daterange"
             align="right"
             unlink-panels
@@ -41,7 +39,8 @@
         </div>
       </el-form-item>
 
-      <el-button type="success" @click="searchcartype">查询</el-button>
+      <el-button type="success" @click="searchproduct">查询</el-button>
+      <el-button type="danger" @click="resetproduct(productFrom)">重置</el-button>
     </el-form>
 
 
@@ -111,11 +110,16 @@
     data() {
       return {
         tableData: [],
+        productFrom:{},
         options:[],
+        value:"",
         pageno: 1,
         pagesize: 5,
         total: 0,
-        name: "",
+        firstKindId:"",
+        firstKindName:"",
+        name:"",
+        productName: "",
         remark: "",
         shortcuts: [{
           text: '最近一周',
@@ -142,8 +146,7 @@
             return [start, end]
           })(),
         }],
-        value1: '',
-        value2: ''
+        registerTime: ''
       }
     },
     methods: {
@@ -153,20 +156,15 @@
         params.append("pageno", this.pageno);
         params.append("pagesize", this.pagesize);
 
-        params.append("name", this.name);
-        params.append("remark", this.remark);
+        // params.append("name", this.name);
+        params.append("productName", this.productName);
 
 
-        this.$axios.post("queryallcartype.action", params).then(function (response) {
+        this.$axios.post("/mDesignProcedure/queryallProcedure.action", params).then(function (response) {
           _this.tableData = response.data.records;
-
-          //修改图片地址  追加前缀
-          _this.tableData.forEach((item) => {
-            item.img = "http://localhost:8888/" + item.img;
-          })
-
-
           _this.total = response.data.total;
+          _this.firstKindName = response.data.records[0].firstKindName;
+          _this.firstKindId = response.data.records[0].firstKindId;
         }).catch();
       },
       handleSizeChange(val) {  //页size变更
@@ -179,8 +177,12 @@
         this.pageno = val;
         this.getdata();
       },
-      searchcartype() {   //条件查询
+      searchproduct() {   //条件查询
         this.getdata();
+      },
+      resetproduct(name){
+        this.$refs[name].resetFields()
+        this.dialogVisible = false;
       }
     },
     created() {
