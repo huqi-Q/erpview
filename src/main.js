@@ -16,7 +16,7 @@ Vue.use(ElementUI)
 Vue.use(router);
 
 new Vue({
-  router,
   el: '#app',
+  // router,
   render: h => h(App)
 })

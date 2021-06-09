@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--  条件查询-->
-    <el-form v-model="productFrom" ref="productFrom"  :inline="true">
+    <el-form :model="productFrom" ref="productFrom"  :inline="true">
       <el-form-item label="请选择产品I级分类">
         <el-select v-model="value" placeholder="请选择">
           <el-option
@@ -181,7 +181,7 @@
         this.getdata();
       },
       resetproduct(name){
-        this.$refs[name].resetFields()
+        this.$refs.productFrom.resetFields()
         this.dialogVisible = false;
       }
     },

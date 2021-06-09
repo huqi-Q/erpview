@@ -48,6 +48,7 @@
 <script>
 import ProcessList from "./components/view/process/ProcessList";
 import ProcessFormulate from "./components/view/process/ProcessFormulate";
+import ProcessReview from "./components/view/process/ProcessReview";
 import Welcome from "./components/view/Welcome";
 
 export default {
@@ -114,7 +115,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessFormulate
+    ProcessList,Welcome,ProcessFormulate,ProcessReview
   }
 }
 </script>
