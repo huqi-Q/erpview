@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
-import ProcessList from "../components/view/process/ProcessList";
+import ProcessList from "../components/view/ProcessList";
 import Welcome from "../components/view/Welcome";
 
 Vue.use(VueRouter);
