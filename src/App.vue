@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import ProcessList from "./components/view/ProcessList";
 
 export default {
   name: 'app',
