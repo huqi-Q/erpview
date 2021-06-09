@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import ProcessList from "./components/view/ProcessList";
+import Welcome from "./components/view/Welcome";
 
 export default {
   name: 'app',
@@ -111,7 +113,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    UserList,RoleList,ProcessList,PerList,Welcome
+    ProcessList,Welcome
   }
 }
 </script>
