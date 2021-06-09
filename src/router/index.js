@@ -1,19 +1,16 @@
 import Vue from 'vue'
-import VueRouter from "vue-router";
-import ProcessList from "../components/view/ProcessList";
-import Welcome from "../components/view/Welcome";
+import Router from 'vue-router'
+import Login from '../components/login/Login'
 
-Vue.use(VueRouter);
+Vue.use(Router)
 
-export default new VueRouter({
-  routes:[
-    {
-     path:'/ProcessList',
-     component:ProcessList
-    },
-    {
-      path:'/Welcome',
-      component:Welcome
+export default new Router({
+  mode: 'history',
+  routes: [
+   {
+      path: '/Login',
+      name: '登录',
+      component: Login
     }
   ]
 })
