@@ -128,34 +128,41 @@
           <!--生产工序-->
             <div>
               <el-table
-                :data="tableData"
+                :data="scgxtableData"
                 stripe
                 border
+                :cell-style="changeCellStyle"
                 style="width: 100%">
                 <el-table-column
-                  prop="productId"
+                  prop="typeName"
                   label="工序名称"
                   width="180">
                 </el-table-column>
                 <el-table-column
-                  prop="productName"
+                  prop="typeId"
                   label="工序编号">
                 </el-table-column>
                 <el-table-column
-                  prop="productClass"
+                  prop="register"
                   label="描述">
                 </el-table-column>
                 <el-table-column
-                  prop="firstKindName"
                   label="工时数">
+                  <template slot-scope="scope">
+                    <input class="mbk" type="text"></input>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="secondKindName"
                   label="工时单位">
+                  <template slot-scope="scope">
+                    <input class="mbk" type="text"></input>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="thirdKindName"
                   label="单位工时成本">
+                  <template slot-scope="scope">
+                    <input class="mbk" type="text"></input>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="responsiblePerson"
@@ -183,20 +190,55 @@
       <br>
 
       <div>
-        <el-button @click="zdwinshow = false">添加工序</el-button>
+        <el-button @click="tjgxtb">添加工序</el-button>
         <el-button @click="scgx">删除工序</el-button>
       </div>
 
       </el-form>
-
-
-
               <div slot="footer" class="dialog-footer">
                 <el-button @click="zdwinshow = false">取 消</el-button>
                 <el-button type="primary" @click="scgx">确 定</el-button>
               </div>
-
             </el-dialog>
+
+<!--工序表格-->
+  <el-dialog width="80%" title="生产工序设计单" :visible="gxwinshow">
+
+
+      <!--生产工序-->
+      <div>
+        <el-table
+          :data="manufactureData"
+          stripe
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="typeId"
+            label="工序编号">
+          </el-table-column>
+          <el-table-column
+            prop="typeName"
+            label="工序名称"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="describe1"
+            label="工序描述">
+          </el-table-column>
+          <el-table-column
+            label="添加">
+            <template slot-scope="scope">
+              <a href="#" @click.prevent='tjgx(scope.row)'>添加</a>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <div>
+        <el-button @click="gxwinshow = false">取消</el-button>
+      </div>
+  </el-dialog>
+
             </div>
           </template>
 
@@ -206,9 +248,12 @@
                 data() {
                   return {
                     tableData: [],
+                    scgxtableData:[],
                     currentTime:new Date(),
                     zdwinshow: false,
+                    gxwinshow:false,
                     scFrom:{},
+                    manufactureData:[],
                     options:[],
                     value:"",
                     pageno: 1,
@@ -250,13 +295,34 @@
                     var params = new URLSearchParams();
                     params.append("pageno", this.pageno);
                     params.append("pagesize", this.pagesize);
-
-
-                    this.$axios.post("/dFile/selectAll", params).then(function (response) {
-                      _this.tableData = response.data;
+                    //产品档案
+                    this.$axios.post("/dFile/queryallDFile", params).then(function (response) {
+                      _this.tableData = response.data.records;
                       // _this.total = response.data.total;
-                      _this.firstKindName = response.data[0].firstKindName;
-                      _this.firstKindId = response.data[0].firstKindId;
+                      _this.firstKindName = response.data.records[0].firstKindName;
+                      _this.firstKindId = response.data.records[0].firstKindId;
+                    }).catch();
+
+
+
+                  },
+                  changeCellStyle (row, column, rowIndex, columnIndex) {
+                    if(row.column.label === "工时数"){
+                      return 'background-color: blanchedalmond'  // 修改的样式
+                    }else if(row.column.label === "工时单位"){
+                      return 'background-color: blanchedalmond'
+                    }else if(row.column.label === "单位工时成本"){
+                      return 'background-color: blanchedalmond'
+                    }
+                    else{
+                      return ''
+                    }
+                  },
+                  tjgxtb(){
+                    var _this = this;
+                    this.gxwinshow = true;
+                    this.$axios.post("/manufactureList/queryallmanufactureList.action").then(function (response) {
+                      _this.manufactureData = response.data;
                     }).catch();
                   },
                   handleSizeChange(val) {  //页size变更
@@ -284,6 +350,9 @@
                     this.$axios.post("/dFile/selectById",params).then(function (response) {
                         _this.scFrom=response.data;
                     }).catch();
+                  },
+                  tjgx(row){
+                    this.scgxtableData.push(row);
                   },
                   scgx(){
                     alert("dd")
@@ -315,5 +384,9 @@
               border-bottom: 1px solid black;
               background-color: transparent;
               outline: none;
+            }
+            .mbk{
+              border: none;
+              height: 20px;
             }
           </style>
