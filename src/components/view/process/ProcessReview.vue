@@ -161,11 +161,11 @@
           params.append("productName", this.productName);
 
 
-          this.$axios.post("/mDesignProcedure/queryallProcedure.action", params).then(function (response) {
-            _this.tableData = response.data.records;
-            _this.total = response.data.total;
-            _this.firstKindName = response.data.records[0].firstKindName;
-            _this.firstKindId = response.data.records[0].firstKindId;
+          this.$axios.post("/dFile/selectAll", params).then(function (response) {
+            _this.tableData = response.data;
+            // _this.total = response.data.total;
+            _this.firstKindName = response.data[0].firstKindName;
+            _this.firstKindId = response.data[0].firstKindId;
           }).catch();
         },
         handleSizeChange(val) {  //页size变更
