@@ -51,6 +51,7 @@ import ProcessFormulate from "./components/view/process/ProcessFormulate";
 import ProcessReview from "./components/view/process/ProcessReview";
 import Welcome from "./components/view/Welcome";
 import Sgather from "./components/view/sgather/Sgather";
+import scell from "./components/view/scell/scell";
 
 export default {
   name: 'app',
@@ -116,7 +117,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessFormulate,ProcessReview,Sgather
+    ProcessList,Welcome,ProcessFormulate,ProcessReview,scell
   }
 }
 </script>

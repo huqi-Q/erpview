@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from 'vue-router'
 
 //导入elementui
 import  'element-ui/lib/theme-chalk/index.css'
@@ -13,7 +12,6 @@ Axios.defaults.baseURL="http://localhost:8888";
 Vue.prototype.$axios = Axios;
 
 Vue.use(ElementUI)
-Vue.use(router);
 
 new Vue({
   el: '#app',

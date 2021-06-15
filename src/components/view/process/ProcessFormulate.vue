@@ -87,11 +87,11 @@
       label="产品经理">
     </el-table-column>
     <el-table-column
-      label="制定设计单">
-      <template slot-scope="scope">
-        <a href="#" @click.prevent='zd(scope.row.productId)'>制定设计单</a>
-      </template>
-    </el-table-column>
+    label="制定设计单">
+    <template slot-scope="scope">
+      <a href="#" @click.prevent='zd(scope.row.productId)'>制定设计单</a>
+    </template>
+  </el-table-column>
   </el-table>
   <!-- 分页-->
   <el-pagination
@@ -355,7 +355,7 @@
                     this.scgxtableData.push(row);
                   },
                   scgx(){
-                    alert("dd")
+
                   }
                 },
                 created() {
