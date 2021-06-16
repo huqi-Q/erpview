@@ -50,6 +50,7 @@ import ProcessList from "./components/view/process/ProcessList";
 import ProcessFormulate from "./components/view/process/ProcessFormulate";
 import ProcessReview from "./components/view/process/ProcessReview";
 import Welcome from "./components/view/Welcome";
+import ProcessChange from "./components/view/process/ProcessChange";
 import Sgather from "./components/view/sgather/Sgather";
 import scell from "./components/view/scell/scell";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
@@ -120,7 +121,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    ProcessList,Welcome,ProcessFormulate,ProcessReview,ProcessChange,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
   }
 }
 </script>

@@ -52,6 +52,11 @@
       border
       style="width: 100%">
       <el-table-column
+        prop="id"
+        label="设计单序号"
+        width="180">
+      </el-table-column>
+      <el-table-column
         prop="designId"
         label="设计单编号"
         width="180">
@@ -62,33 +67,21 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="productName"
-        label="产品名称">
+        prop="register"
+        label="设计人">
       </el-table-column>
       <el-table-column
-        prop="checkTag"
-        label="设计单状态">
-        <template slot-scope="scope">
-                    <span v-if="scope.row.checkTag =='S001-0'"
-                          style="color:lawngreen"
-                    >执行</span>
-          <span
-            v-else-if="scope.row.checkTag == 'S001-1'"
-            style="color:black"
-          >完成</span>
-          <span
-            v-else
-            style="color:orange"
-          >等待</span>
-        </template>
+        prop="registerTime"
+        label="登记时间">
       </el-table-column>
       <el-table-column
-        prop="checkTag"
-        label="审核状态">
+        prop="costPriceSum"
+        label="工时成本">
+      </el-table-column>
+      <el-table-column
+        label="审核">
         <template slot-scope="scope">
-          <span v-if="scope.row.checkTag =='S001-0'" style="color:lawngreen">等待</span>
-          <span v-else-if="scope.row.checkTag == 'S001-1'" style="color:black">通过</span>
-          <span v-else style="color:orange">未通过</span>
+          <a href="#" @click.prevent='shsjd(scope.row)'>审核</a>
         </template>
       </el-table-column>
     </el-table>
@@ -147,7 +140,7 @@
               return [start, end]
             })(),
           }],
-          registerTime: ''
+          registerTime: '',
         }
       },
       methods: {
@@ -158,14 +151,12 @@
           params.append("pagesize", this.pagesize);
 
           // params.append("name", this.name);
-          params.append("productName", this.productName);
+          // params.append("productName", this.productName);
 
 
-          this.$axios.post("/dFile/selectAll", params).then(function (response) {
-            _this.tableData = response.data;
-            // _this.total = response.data.total;
-            _this.firstKindName = response.data[0].firstKindName;
-            _this.firstKindId = response.data[0].firstKindId;
+          this.$axios.post("/mDesignProcedure/queryallProcedure1", params).then(function (response) {
+            _this.tableData = response.data.records;
+            _this.total = response.data.total;
           }).catch();
         },
         handleSizeChange(val) {  //页size变更
@@ -184,6 +175,35 @@
         resetproduct(name){
           this.$refs[name].resetFields()
           this.dialogVisible = false;
+        },
+        shsjd(row){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id", row.id);
+          this.$confirm('确定审核产品:  '+row.productName+' ?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$axios.post("/mDesignProcedure/updateProcedure", params).then(function (response) {
+            if(response.data==true){
+              _this.$message.success({
+                message: '恭喜你,审核成功',
+                type: 'success'
+              });
+            }
+            }).catch();
+
+            _this.getdata();
+            this.zdwinshow = false;
+          }).catch(() => {
+            _this.$message({
+              message: '取消审核,审核失败',
+              type: 'warning'
+            });
+          });
+
+
         }
       },
       created() {
