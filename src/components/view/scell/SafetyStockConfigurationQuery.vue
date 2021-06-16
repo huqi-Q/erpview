@@ -72,10 +72,11 @@
           <!--&gt;等待</span>-->
         <!--</template>-->
       <!--</el-table-column>-->
-      <el-table-column
-        label="制定设计单" prop="productId">
+      <el-table-column prop="checkTag" label="审核状态">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='zhidin(scope.row.id)'>制定设计单</a>
+          <span v-if="scope.row.checkTag =='S001-0'" style="color:lawngreen">等待审核</span>
+          <span v-else-if="scope.row.checkTag == 'S001-1'" style="color:black">审核通过</span>
+          <span v-else style="color:orange">未通过</span>
         </template>
       </el-table-column>
     </el-table>
@@ -207,9 +208,9 @@
         params.append("remark", this.remark);
 
 
-        axios.post("/sCell/queryallcartype.action", params).then(function (response) {
+        axios.post("/sCell/selectall.action", params).then(function (response) {
           _this.tableData = response.data.data;
-          console.log(    _this.tableData = response.data.data)
+          console.log(_this.tableData = response.data.data)
           _this.total = response.data.total;
         }).catch();
       },
@@ -246,7 +247,6 @@
         this.zdwinshow = false;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("productId",_this.scFrom1.productId)
         params.append("id",_this.scFrom1.id)
         params.append("minAmount",_this.minAmount)
         params.append("maxAmount",_this.maxAmount)
@@ -255,7 +255,6 @@
         params.append("config",_this.config)
         axios.post("/sCell/addSCell.action",params).then(function (response) {
             console.log(response)
-          _this.getdata();
         }).catch();
       },
       zhidin(id){

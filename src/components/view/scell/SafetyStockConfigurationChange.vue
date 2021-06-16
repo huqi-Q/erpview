@@ -4,20 +4,20 @@
     <!--  条件查询-->
     <el-form :inline="true">
       <!--<el-form-item label="请选择产品I级分类">-->
-        <!--<el-select v-model="value" placeholder="请选择">-->
-          <!--<el-option-->
-            <!--v-for="item in options"-->
-            <!--:key="item.value"-->
-            <!--:label="item.label"-->
-            <!--:value="item.value">-->
-          <!--</el-option>-->
-        <!--</el-select>-->
+      <!--<el-select v-model="value" placeholder="请选择">-->
+      <!--<el-option-->
+      <!--v-for="item in options"-->
+      <!--:key="item.value"-->
+      <!--:label="item.label"-->
+      <!--:value="item.value">-->
+      <!--</el-option>-->
+      <!--</el-select>-->
       <!--</el-form-item>-->
       <!--<el-form-item label="请选择产品II级分类">-->
-        <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
+      <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
       <!--</el-form-item>-->
       <!--<el-form-item label="请选择产品III级分类">-->
-        <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
+      <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
       <!--</el-form-item>-->
       <el-form-item label="请选择产品">
         <el-input placeholder="请输入备注" clearable v-model="name"></el-input>
@@ -26,19 +26,19 @@
         <el-input placeholder="请输入备注" clearable v-model="remark"></el-input>
       </el-form-item>
       <!--<el-form-item label="请输入登记时间">-->
-        <!--<div class="block">-->
-          <!--<el-date-picker-->
-            <!--v-model="value2"-->
-            <!--type="daterange"-->
-            <!--align="right"-->
-            <!--unlink-panels-->
-            <!--range-separator="至"-->
-            <!--start-placeholder="开始日期"-->
-            <!--end-placeholder="结束日期"-->
-            <!--:shortcuts="shortcuts"-->
-          <!--&gt;-->
-          <!--</el-date-picker>-->
-        <!--</div>-->
+      <!--<div class="block">-->
+      <!--<el-date-picker-->
+      <!--v-model="value2"-->
+      <!--type="daterange"-->
+      <!--align="right"-->
+      <!--unlink-panels-->
+      <!--range-separator="至"-->
+      <!--start-placeholder="开始日期"-->
+      <!--end-placeholder="结束日期"-->
+      <!--:shortcuts="shortcuts"-->
+      <!--&gt;-->
+      <!--</el-date-picker>-->
+      <!--</div>-->
       <!--</el-form-item>-->
 
       <el-button type="success" @click="searchcartype">查询</el-button>
@@ -56,26 +56,26 @@
       <el-table-column prop="thirdKindName" label="三级分类"></el-table-column>
 
       <!--<el-table-column-->
-        <!--prop="checkTag"-->
-        <!--label="设计单状态">-->
-        <!--<template slot-scope="scope">-->
-                    <!--<span v-if="scope.row.checkTag =='S001-0'"-->
-                          <!--style="color:lawngreen"-->
-                    <!--&gt;执行</span>-->
-          <!--<span-->
-            <!--v-else-if="scope.row.checkTag == 'S001-1'"-->
-            <!--style="color:black"-->
-          <!--&gt;完成</span>-->
-          <!--<span-->
-            <!--v-else-->
-            <!--style="color:orange"-->
-          <!--&gt;等待</span>-->
-        <!--</template>-->
+      <!--prop="checkTag"-->
+      <!--label="设计单状态">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span v-if="scope.row.checkTag =='S001-0'"-->
+      <!--style="color:lawngreen"-->
+      <!--&gt;执行</span>-->
+      <!--<span-->
+      <!--v-else-if="scope.row.checkTag == 'S001-1'"-->
+      <!--style="color:black"-->
+      <!--&gt;完成</span>-->
+      <!--<span-->
+      <!--v-else-->
+      <!--style="color:orange"-->
+      <!--&gt;等待</span>-->
+      <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
-        label="制定设计单" prop="productId">
+        label="变更">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='zhidin(scope.row.id)'>制定设计单</a>
+          <a href="#" @click.prevent='zhidin(scope.row)'>变更</a>
         </template>
       </el-table-column>
     </el-table>
@@ -114,14 +114,14 @@
             <strong >警报上限次数:</strong>
             <input class="xhx" style="width:200px" v-model="maxAmount"></input>
           </div>
-          </el-col>
-          <el-col :span="12">
-          <div class="grid-content bg-purple">
-            <br>
-            <strong >设计人:</strong>
-            <input class="xhx" style="width:200px" v-model="register"></input>
-          </div>
         </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <br>
+              <strong >设计人:</strong>
+              <input class="xhx" style="width:200px" v-model="register"></input>
+            </div>
+          </el-col>
         </el-row>
         <br>
         <!--生产工序-->
@@ -148,7 +148,7 @@
             <div class="grid-content bg-purple-light">
               <strong>登  记  时  间: </strong>
               {{scFrom1.registerTime}}
-          </div>
+            </div>
           </el-col>
         </el-row>
         <br>
@@ -160,8 +160,8 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="zdwinshow = false">取 消</el-button>
-        <el-button type="primary" @click.prevent="tianjia">确 定</el-button>
+        <el-button @click="zdwinshow = false">返回</el-button>
+        <el-button type="primary" @click.prevent="tianjia">变更</el-button>
       </div>
     </el-dialog>
 
@@ -170,7 +170,7 @@
 <script>
   import axios from 'axios'
   export default {
-    name: "scell",
+    name: "SafetyStockConfigurationChange",
     data() {
       return {
         maxCapacity: "",
@@ -193,7 +193,8 @@
         value1: '',
         value2: '',
         editform: "",
-        config: ""
+        config: "",
+        pid: ""
       }
     },
     methods: {
@@ -207,9 +208,8 @@
         params.append("remark", this.remark);
 
 
-        axios.post("/sCell/queryallcartype.action", params).then(function (response) {
+        axios.post("/sCell/queryallcartypechange.action", params).then(function (response) {
           _this.tableData = response.data.data;
-          console.log(    _this.tableData = response.data.data)
           _this.total = response.data.total;
         }).catch();
       },
@@ -246,28 +246,32 @@
         this.zdwinshow = false;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("productId",_this.scFrom1.productId)
+        params.append("productId",_this.pid);
         params.append("id",_this.scFrom1.id)
         params.append("minAmount",_this.minAmount)
         params.append("maxAmount",_this.maxAmount)
         params.append("register",_this.register)
         params.append("maxCapacityAmount",_this.maxCapacity)
         params.append("config",_this.config)
-        axios.post("/sCell/addSCell.action",params).then(function (response) {
-            console.log(response)
+        axios.post("/sCell/changeSCell.action",params).then(function (response) {
+          console.log(response)
           _this.getdata();
         }).catch();
       },
-      zhidin(id){
-      this.zdwinshow = true;
-      var _this = this;
-      var params = new URLSearchParams();
-      params.append("id",id);
-      axios.post("/sCell/selectSCellbyid.action",params).then(function (response) {
-        _this.scFrom=response.data;
-        _this.scFrom1=response.data[0];
-      }).catch();
-    }
+      zhidin(row){
+        this.zdwinshow = true;
+        var _this = this;
+        var params = new URLSearchParams();
+        console.log(row)
+        params.append("id",row.id);
+
+
+        _this.pid=row.productId;
+        axios.post("/sCell/selectSCellbyid.action",params).then(function (response) {
+          _this.scFrom=response.data;
+          _this.scFrom1=response.data[0];
+        }).catch();
+      }
     },
     created() {
       this.getdata();
