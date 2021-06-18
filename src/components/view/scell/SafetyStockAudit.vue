@@ -91,7 +91,7 @@
     </el-pagination>
 
     <!--  设计单-->
-    <el-dialog width="80%" title="生产工序设计单" :visible="zdwinshow">
+    <el-dialog width="80%" title="安全库存配置复核" :visible="zdwinshow">
 
       <el-form  :modal="scFrom1">
         <el-row>
@@ -127,7 +127,7 @@
         <!--生产工序-->
         <div>
           <el-table :data="scFrom" stripe border style="width: 100%">
-            <el-table-column prop="id" label="序号" width="180"></el-table-column>
+            <el-table-column prop="id" v-model="id" label="序号" width="180"></el-table-column>
             <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
             <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
             <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
@@ -161,8 +161,20 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="zdwinshow = false">返回</el-button>
-        <el-button type="primary" @click.prevent="tianjia">复核通过</el-button>
-        <el-button type="primary" @click.prevent="tianjia">驳回</el-button>
+        <el-button type="primary" @click.prevent="tianjia">通过</el-button>
+        <el-button type="primary" @click.prevent="bohuei">驳回</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog width="80%" title="驳回理由" :visible="bohueidiv">
+      <el-input
+        type="textarea"
+        :rows="2"
+        placeholder="请输入内容"
+        v-model="textarea">
+      </el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="bohueidiv = false">取消</el-button>
+        <el-button type="primary" @click.prevent="bohueitijiao">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -176,11 +188,13 @@
         maxCapacity: "",
         baocuen: "",
         minAmount: "",
+        id:"",
         maxAmount: "",
         register: "",
         tableData: [],
         options:[],
         zdwinshow: false,
+        bohueidiv: false,
         pageno: 1,
         pagesize: 5,
         total: 0,
@@ -193,6 +207,7 @@
         value1: '',
         value2: '',
         editform: "",
+        textarea: "",
         config: ""
       }
     },
@@ -237,8 +252,51 @@
         var params = new URLSearchParams();
         params.append("productId",_this.scFrom1.productId);
         axios.post("/sCell/dFileUpdateById.action",params).then(function (response) {
-          console.log(response)
+          if (response.data == true) {
+            _this.$notify({
+              title: '成功',
+              message: '复核成功',
+              type: 'success'
+            });
+            _this.zdwinshow = false;
+          } else {
+            _this.$notify({
+              title: '失败',
+              message: '服务端请求超时 请重试',
+              type: 'danger'
+            });}
           _this.getdata();
+        }).catch();
+      },
+      bohuei(){ //驳回
+      this.bohueidiv=true
+
+      },
+      bohueitijiao(){ //驳回理由
+        this.bohueidiv=false
+
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("productId",_this.scFrom1.productId);
+        params.append("Reasonsforrejection",this.textarea);
+        console.log(this.tableData)
+        axios.post("/sCell/Reasonsforrejection.action",params).then(function (response) {
+          if (response.data== true) {
+            _this.bohueidiv=false
+            _this.zdwinshow=false
+            _this.$notify({
+              title: '成功',
+              message: '提交成功',
+              type: 'success'
+            });
+            _this.getdata();
+          }else {
+            _this.$notify({
+              title: '失败',
+              message: '服务端请求超时 请重试',
+              type: 'danger'
+            });}
+
         }).catch();
       },
       zhidin(id){

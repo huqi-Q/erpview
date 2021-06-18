@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>制定安全库存配置单</span>
+        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+      </div>
 
     <!--  条件查询-->
     <el-form :inline="true">
@@ -91,7 +96,7 @@
     </el-pagination>
 
     <!--  设计单-->
-    <el-dialog width="80%" title="生产工序设计单" :visible="zdwinshow">
+    <el-dialog width="80%" title="制定安全库存配置单" :visible="zdwinshow">
 
       <el-form  :modal="scFrom1">
         <el-row>
@@ -160,11 +165,11 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="zdwinshow = false">取 消</el-button>
-        <el-button type="primary" @click.prevent="tianjia">确 定</el-button>
+        <el-button @click="zdwinshow = false">返回</el-button>
+        <el-button type="primary" @click.prevent="tianjia">制定</el-button>
       </div>
     </el-dialog>
-
+    </el-card>
   </div>
 </template>
 <script>
@@ -243,18 +248,30 @@
 
       },
       tianjia(){
-        this.zdwinshow = false;
+
         var _this = this;
         var params = new URLSearchParams();
-        params.append("productId",_this.scFrom1.productId)
         params.append("id",_this.scFrom1.id)
+        params.append("productId",_this.scFrom1.productId)
         params.append("minAmount",_this.minAmount)
         params.append("maxAmount",_this.maxAmount)
         params.append("register",_this.register)
         params.append("maxCapacityAmount",_this.maxCapacity)
         params.append("config",_this.config)
         axios.post("/sCell/addSCell.action",params).then(function (response) {
-            console.log(response)
+          if (response.data == true) {
+          _this.$notify({
+            title: '成功',
+            message: '安全库存配置单制定成功,但需要审核!',
+            type: 'success'
+          });
+          _this.zdwinshow = false;
+        } else {
+          _this.$notify({
+            title: '失败',
+            message: '服务端请求超时 请重试',
+            type: 'danger'
+          });}
           _this.getdata();
         }).catch();
       },
@@ -282,5 +299,16 @@
     border-bottom: 1px solid black;
     background-color: transparent;
     outline: none;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 100%;
   }
 </style>
