@@ -160,10 +160,10 @@
           </el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <strong >产品编号: {{scFrom1.reasonexact}}</strong>
+              <strong >产品编号: {{scFrom1.productId}}</strong>
               <br>
               <br>
-              <strong >成本价格: {{scFrom1.reasonexact}}</strong>
+              <strong >成本价格: {{scFrom3.realCostPrice}}</strong>
             </div>
           </el-col>
         </el-row>
@@ -178,7 +178,7 @@
             <el-table-column prop="maxCapacityAmount" label="当前最大存储"></el-table-column>
             <el-table-column prop="gatheredAmountSum" label="本次入库数量">
               <template slot-scope="scope">
-                <el-input  placeholder="请输入内容" v-model="CapacityAmount" clearable></el-input>
+                <el-input type="number"  placeholder="请输入内容" v-model="CapacityAmount" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
               </template>
               <!--<input type="text"  v-model="CapacityAmount" size="small" clearable />-->
             </el-table-column>
@@ -193,20 +193,20 @@
             <strong style="margin-right: 280px">登记人: {{scFrom1.register}}</strong>
             <br>
             <br>
-            <strong style="margin-right: 280px">应入库数: {{reasonexact}}</strong>
+            <strong style="margin-right: 280px">应入库数: {{scFrom1.amountsum}}</strong>
             <br>
             <br>
-            <strong style="margin-right: 280px">应入库成本: {{scFrom1.reasonexact}}</strong>
+            <strong style="margin-right: 280px">应入库成本: {{scFrom1.costPriceSum}}</strong>
           </div></el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
               <strong >登记时间: {{scFrom1.registerTime}}</strong>
               <br>
               <br>
-              <strong >已入库数: {{scFrom1.gatheredAmountSum}}</strong>
+              <strong >已入库数: {{scFrom4.amount}}</strong>
               <br>
               <br>
-              <strong >已入库成本: {{scFrom1.reasonexact}}</strong>
+              <strong >已入库成本: {{scFrom4.subtotal}}</strong>
             </div>
           </el-col>
         </el-row>
@@ -229,6 +229,8 @@
     data() {
       return {
         CapacityAmount: "",
+        scFrom3:[],
+        scFrom4:[],
         baocuen: "",
         register: "",
         tableData: [],
@@ -296,18 +298,25 @@
 
       },
       tianjia(){
-        this.diaodumode = false;
         var _this = this;
+        this.diaodumode = false;
         var params = new URLSearchParams();
-        params.append("productId",_this.pid);
-        params.append("id",_this.scFrom1.id)
-        params.append("minAmount",_this.minAmount)
-        params.append("maxAmount",_this.maxAmount)
-        params.append("register",_this.register)
-        params.append("maxCapacityAmount",_this.maxCapacity)
-        params.append("config",_this.config)
-        axios.post("/sCell/changeSCell.action",params).then(function (response) {
-          console.log(response)
+        params.append("amount",_this.CapacityAmount);
+        params.append("productId",_this.scFrom4.productId);
+        axios.post("/sGatherDetails/savSGatherDetails.action",params).then(function (response) {
+          if (response.data == true) {
+            _this.$notify({
+              title: '成功',
+              message: '入口成功!',
+              type: 'success'
+            });
+            _this.zdwinshow = false;
+          } else {
+            _this.$notify({
+              title: '失败',
+              message: '服务端请求超时 请重试',
+              type: 'danger'
+            });}
           _this.getdata();
         }).catch();
       },
@@ -324,6 +333,16 @@
       },
       diaodu(row){
         this.diaodumode = true;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("productId",row.productId);
+
+        axios.post("/dFile/querybyproductid.action",params).then(function (response) {
+          _this.scFrom3=response.data[0];
+        }).catch();
+        axios.post("/sGatherDetails/querybyproductid.action",params).then(function (response) {
+          _this.scFrom4=response.data[0];
+        }).catch();
       },
       fanhuei(){
         this.diaodumode = false;
@@ -347,4 +366,12 @@
   .inputDeep>>>.el-input__inner {
     border: 0;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button
+  {
+    -webkit-appearance:none ;
+  }
+    input[type="number"]{
+      -moz-appearance:textfield ;
+    }
 </style>
