@@ -56,6 +56,10 @@ import scell from "./components/view/scell/scell";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
 import SafetyStockConfigurationChange from "./components/view/scell/SafetyStockConfigurationChange";
 import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockConfigurationQuery";
+import GxdList from "./components/view/gxwl/GxdList";
+import GxdShList from "./components/view/gxwl/GxdShList";
+import GxdBgList from "./components/view/gxwl/GxdBgList";
+import GxdCxList from "./components/view/gxwl/GxdCxList";
 import ProcessRegister from "./components/view/processPlan/ProcessRegister";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
@@ -124,7 +128,13 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessChange,Sgather
+    GxdList,GxdShList
+    ,GxdBgList,GxdCxList,ProcessFormulate,
+    ProcessReview,scell,SafetyStockAudit,
+    SafetyStockConfigurationChange,
+    SafetyStockConfigurationQuery,
+    ProcessList,Welcome,
+    ProcessChange,Sgather
     ,ProcessRegister,
     Makestockinorder,Makedeliveryorder
     ,
