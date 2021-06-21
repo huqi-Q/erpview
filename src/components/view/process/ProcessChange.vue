@@ -87,9 +87,9 @@
       label="产品经理">
     </el-table-column>
     <el-table-column
-      label="制定设计单">
+      label="变更">
       <template slot-scope="scope">
-        <a href="#" @click.prevent='zd(scope.row.productId)'>制定设计单</a>
+        <a href="#" @click.prevent='bg(scope.row)'>变更</a>
       </template>
     </el-table-column>
   </el-table>
@@ -115,7 +115,7 @@
           <br>
           <br>
           <strong >设计人:</strong>
-          <input v-model="designer" class="xhx" style="width:300px"></input>
+          <input v-model="scFrom.register" class="xhx" style="width:300px"></input>
           </div>
         </el-col>
         <el-col :span="12">
@@ -138,41 +138,45 @@
                   width="55">
                 </el-table-column>
                 <el-table-column
-                  prop="typeName"
+                  prop="procedureName"
                   label="工序名称"
                   width="180">
                 </el-table-column>
                 <el-table-column
-                  prop="typeId"
+                  prop="procedureId"
                   label="工序编号">
                 </el-table-column>
                 <el-table-column
-                  prop="register"
+                  prop="procedureDescribe"
                   label="描述">
                 </el-table-column>
                 <el-table-column
+                  prop="labourHourAmount"
                   label="工时数">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="labourHourAmount" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="labourHourAmount" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="amountUnit"
                   label="工时单位">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="amountUnit" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="amountUnit" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="costPrice"
                   label="单位工时成本">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="costPrice" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="costPrice" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="subtotal"
                   label="工时成本小计(元)">
-                  <template slot-scope="scope">
-                    {{labourHourAmount*costPrice}}
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    {{labourHourAmount*costPrice}}-->
+<!--                  </template>-->
                 </el-table-column>
               </el-table>
             </div>
@@ -219,16 +223,16 @@
           border
           style="width: 100%">
           <el-table-column
-            prop="typeId"
+            prop="id"
             label="工序编号">
           </el-table-column>
           <el-table-column
-            prop="typeName"
+            prop="procedureName"
             label="工序名称"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="describe1"
+            prop="procedureDescribe"
             label="工序描述">
           </el-table-column>
           <el-table-column
@@ -250,7 +254,7 @@
 
           <script>
               export default {
-                  name: "ProcessFormulate",
+                  name: "ProcessChange",
                 data() {
                   return {
                     tableData: [],
@@ -307,7 +311,7 @@
                     params.append("pageno", this.pageno);
                     params.append("pagesize", this.pagesize);
                     //产品档案
-                    this.$axios.post("/dFile/selectallDFile", params).then(function (response) {
+                    this.$axios.post("/mDesignProcedure/queryallProcedure2", params).then(function (response) {
                       _this.tableData = response.data.records;
                       _this.total = response.data.total;
                       // _this.firstKindName = response.data.records[0].firstKindName;
@@ -357,13 +361,16 @@
                     this.$refs.productFrom.resetFields()
                     this.dialogVisible = false;
                   },
-                  zd(id){
+                  bg(row){
                     this.zdwinshow = true;
                     var _this = this;
                     var params = new URLSearchParams();
-                    params.append("id",id);
-                    this.$axios.post("/dFile/selectById",params).then(function (response) {
+                    params.append("id",row.id);
+                    this.$axios.post("/mDesignProcedure/selectById",params).then(function (response) {
                         _this.scFrom=response.data;
+                    }).catch();
+                    this.$axios.post("/mDesignProcedureDetails/selectById",params).then(function (response) {
+                      _this.scgxtableData=response.data;
                     }).catch();
                   },
                   tjgx(row){
@@ -371,33 +378,15 @@
                   },
                   scgx(){
                     var _this = this;
-                    var arr = this.manufactureData;
-                    let newArr = [];
-                    arr.map((item, index) => {
-                      newArr.push(
-                        Object.assign({}, item, {
-                          "detailsNumber":item.id,
-                          "procedureId":item.typeId,
-                          "procedureName":item.typeName,
-                          "labourHourAmount":this.labourHourAmount,
-                          "amountUnit":this.amountUnit,
-                          "costPrice":this.costPrice,
-                          "productId1":this.scFrom.productId,
-                          "productName1":this.scFrom.productName,
-                          "designer1":this.designer
-                        })
-                      )
-                    })
-
                     this.$confirm('确定设计产品:  '+this.scFrom.productName+' ?', '提示', {
                       confirmButtonText: '确定',
                       cancelButtonText: '取消',
                       type: 'warning'
                     }).then(() => {
-                      this.$axios.post("/mDesignProcedure/addProcedure.action",JSON.stringify(newArr)
+                      this.$axios.post("/mDesignProcedure/addProcedure.action",JSON.stringify(arr)
                         ,{headers:{"Content-Type":"application/json"}}
                       ).then(function (response) {}).catch();
-                      this.getdata();
+                      getdata();
                       this.$message({
                         type: 'success',
                         message: '设计成功!'

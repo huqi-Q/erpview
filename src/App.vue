@@ -50,6 +50,7 @@ import ProcessList from "./components/view/process/ProcessList";
 import ProcessFormulate from "./components/view/process/ProcessFormulate";
 import ProcessReview from "./components/view/process/ProcessReview";
 import Welcome from "./components/view/Welcome";
+import ProcessChange from "./components/view/process/ProcessChange";
 import Sgather from "./components/view/sgather/Sgather";
 import scell from "./components/view/scell/scell";
 import QueryallDFile from "./components/view/dfile/queryallDFile";
@@ -58,6 +59,13 @@ import addDFile from "./components/view/dfile/addDFile";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
 import SafetyStockConfigurationChange from "./components/view/scell/SafetyStockConfigurationChange";
 import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockConfigurationQuery";
+import GxdList from "./components/view/gxwl/GxdList";
+import GxdShList from "./components/view/gxwl/GxdShList";
+import GxdBgList from "./components/view/gxwl/GxdBgList";
+import GxdCxList from "./components/view/gxwl/GxdCxList";
+import ProcessRegister from "./components/view/processPlan/ProcessRegister";
+import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
+import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
 
 export default {
   name: 'app',
@@ -124,6 +132,16 @@ export default {
   },
   components:{
     ProcessList,Welcome,ProcessFormulate,QueryallDFile,updateDFile,addDFile,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    GxdList,GxdShList
+    ,GxdBgList,GxdCxList,ProcessFormulate,
+    ProcessReview,scell,SafetyStockAudit,
+    SafetyStockConfigurationChange,
+    SafetyStockConfigurationQuery,
+    ProcessList,Welcome,
+    ProcessChange,Sgather
+    ,ProcessRegister,
+    Makestockinorder,Makedeliveryorder
+    ,
   }
 }
 </script>

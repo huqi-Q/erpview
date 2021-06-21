@@ -40,7 +40,7 @@
       </el-form-item>
 
       <el-button type="success" @click="searchproduct">查询</el-button>
-      <el-button type="danger" @click="resetproduct(productFrom)">重置</el-button>
+      <el-button type="danger" @click="resetproduct()">重置</el-button>
     </el-form>
 
 
@@ -180,9 +180,8 @@
       searchproduct() {   //条件查询
         this.getdata();
       },
-      resetproduct(name){
-        this.$refs.productFrom.resetFields()
-        this.dialogVisible = false;
+      resetproduct(){
+        this.$refs.productFrom.resetFields();
       }
     },
     created() {
