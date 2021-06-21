@@ -47,13 +47,12 @@
 
     <!--表格 -->
     <el-table :data="tableData" stripe border style="width: 100%">
-      <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
-      <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="type" label="用途类型"></el-table-column>
-      <el-table-column prop="firstKindName" label="档次级别"></el-table-column>
-      <el-table-column prop="firstKindName" label="一级分类"></el-table-column>
-      <el-table-column prop="secondKindName" label="二级分类"></el-table-column>
-      <el-table-column prop="thirdKindName" label="三级分类"></el-table-column>
+      <el-table-column prop="payId" label="出库单编号" width="180"></el-table-column>
+      <el-table-column prop="reason" label="出库理由"></el-table-column>
+      <el-table-column prop="reasonexact" label="出库详细理由"></el-table-column>
+      <el-table-column prop="registerTime" label="登记时间"></el-table-column>
+      <el-table-column prop="amountSum" label="总件数"></el-table-column>
+      <el-table-column prop="costPriceSum" label="总金额"></el-table-column>
 
       <!--<el-table-column-->
       <!--prop="checkTag"-->
@@ -90,36 +89,81 @@
       :total="total">
     </el-pagination>
 
-    <!--  安全库存配置变更-->
-    <el-dialog width="80%" title="安全库存配置变更" :visible="zdwinshow">
+    <!--  预告出调度单-->
+    <el-dialog width="80%" title="出调度单" :visible="zdwinshow">
 
       <el-form  :modal="scFrom1">
         <el-row>
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <strong style="margin-right: 220px">产  品  名  称  :  {{scFrom1.productName}}</strong>
+              <strong style="margin-right: 220px">出库单编号:  {{scFrom1.payId}}</strong>
               <br>
               <br>
-              <strong >警报下限次数:</strong>
-              <input class="xhx" style="width:200px" value="dwef" v-model="minAmount"></input>
+              <strong style="margin-right: 310px">出库理由:  {{scFrom1.reason}}</strong>
             </div>
           </el-col>
           <el-col :span="12">
-            <div class="grid-content bg-purple-light">
-              <strong>产  品   编 号  :  {{scFrom1.productId}}</strong>
-            </div>
-          </el-col><el-col :span="12">
-          <div class="grid-content bg-purple">
-            <br>
-            <strong >警报上限次数:</strong>
-            <input class="xhx" style="width:200px" v-model="maxAmount"></input>
-          </div>
-        </el-col>
-          <el-col :span="12">
             <div class="grid-content bg-purple">
               <br>
-              <strong >设计人:</strong>
-              <input class="xhx" style="width:200px" v-model="register"></input>
+              <strong >出库详细理由: {{scFrom1.reasonexact}}</strong>
+            </div>
+          </el-col>
+        </el-row>
+        <br>
+        <!--生产工序-->
+        <div>
+          <el-table :data="scFrom" stripe border style="width: 100%">
+            <el-table-column prop="id" label="序号" width="180"></el-table-column>
+            <el-table-column prop="productName" label="产品名称"></el-table-column>
+            <el-table-column prop="productId" label="产品编号"></el-table-column>
+            <el-table-column prop="amountSum" label="应入库数量"></el-table-column>
+            <el-table-column prop="gatheredAmountSum" label="已入库数量"></el-table-column>
+            <el-table-column  label="调度">
+              <template slot-scope="scope">
+                <a href="#" @click.prevent='diaodu(scope.row)'>出库调度</a>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+
+        <el-row>
+          <br>
+          <br>
+          <el-col :span="12"><div class="grid-content bg-purple">
+            <strong >应入库总jian数: {{register}}</strong>
+          </div></el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple-light">
+              <strong>登  记  时  间: </strong>
+              {{scFrom1.registerTime}}
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="zdwinshow = false">返回</el-button>
+      </div>
+    </el-dialog>
+
+    <!--修改调度-->
+    <el-dialog width="80%" title="入库调度单" :visible="diaodumode">
+
+      <el-form  :modal="scFrom1">
+        <el-row>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">入库单编号:  {{scFrom1.payId}}</strong>
+              <br>
+              <br>
+              <strong style="margin-right: 310px">产品名称:  {{scFrom1.productName}}</strong>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <strong >产品编号: {{scFrom1.productId}}</strong>
+              <br>
+              <br>
+              <strong >成本价格: {{scFrom3.realCostPrice}}</strong>
             </div>
           </el-col>
         </el-row>
@@ -129,11 +173,15 @@
           <el-table :data="scFrom" stripe border style="width: 100%">
             <el-table-column prop="id" label="序号" width="180"></el-table-column>
             <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
-            <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
-            <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
-            <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="maxCapacity"/></el-table-column>
-            <!--<el-table-column prop="responsiblePerson" label="工时成本小计(元)">-->
-            <!--</el-table-column>-->
+            <el-table-column prop="productId" label="存储地址编号"></el-table-column>
+            <el-table-column prop="amountSum" label="存储地址名称"></el-table-column>
+            <el-table-column prop="maxCapacityAmount" label="当前最大存储"></el-table-column>
+            <el-table-column prop="gatheredAmountSum" label="本次入库数量">
+              <template slot-scope="scope">
+                <el-input type="number"  placeholder="请输入内容" v-model="CapacityAmount" clearable oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+              </template>
+            </el-table-column>
+
           </el-table>
         </div>
 
@@ -141,27 +189,33 @@
           <br>
           <br>
           <el-col :span="12"><div class="grid-content bg-purple">
-            <strong >登记人:</strong>
-            <input class="xhx" type="text"  style="width:200px" v-model="register"></input>
+            <strong style="margin-right: 280px">登记人: {{scFrom1.register}}</strong>
+            <br>
+            <br>
+            <strong style="margin-right: 280px">应入库数: {{scFrom1.amountsum}}</strong>
+            <br>
+            <br>
+            <strong style="margin-right: 280px">应入库成本: {{scFrom1.costPriceSum}}</strong>
           </div></el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-              <strong>登  记  时  间: </strong>
-              {{scFrom1.registerTime}}
+              <strong >登记时间: {{scFrom1.registerTime}}</strong>
+              <br>
+              <br>
+              <strong >已入库数: {{scFrom4.amount}}</strong>
+              <br>
+              <br>
+              <strong >已入库成本: {{scFrom4.subtotal}}</strong>
             </div>
           </el-col>
         </el-row>
-        <br>
-        <br>
-        <div style="margin-right:40px">
-          <el-form-item label="设计要求">
-            <el-input type="textarea" v-model="config"></el-input>
-          </el-form-item>
-        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="zdwinshow = false">返回</el-button>
-        <el-button type="primary" @click.prevent="tianjia">变更</el-button>
+        <!--<el-button @click="zdwinshow = false">返回</el-button>-->
+
+        <!--<el-button @click="diaodumode = false";>取消</el-button>-->
+        <el-button @click.prevent="fanhuei">返回</el-button>
+        <el-button type="primary" @click.prevent="tianjia">提交</el-button>
       </div>
     </el-dialog>
 
@@ -170,17 +224,18 @@
 <script>
   import axios from 'axios'
   export default {
-    name: "SafetyStockConfigurationChange",
+    name: "Makestockinorder",
     data() {
       return {
-        maxCapacity: "",
+        CapacityAmount: "",
+        scFrom3:[],
+        scFrom4:[],
         baocuen: "",
-        minAmount: "",
-        maxAmount: "",
         register: "",
         tableData: [],
         options:[],
         zdwinshow: false,
+        diaodumode: false,
         pageno: 1,
         pagesize: 5,
         total: 0,
@@ -194,7 +249,6 @@
         value2: '',
         editform: "",
         config: "",
-        pid: ""
       }
     },
     methods: {
@@ -208,7 +262,7 @@
         params.append("remark", this.remark);
 
 
-        axios.post("/sCell/queryallcartypechange.action", params).then(function (response) {
+        axios.post("/sPay/querybyproductid.action", params).then(function (response) {
           _this.tableData = response.data.data;
           _this.total = response.data.total;
         }).catch();
@@ -243,21 +297,20 @@
 
       },
       tianjia(){
-        this.zdwinshow = false;
+        this.diaodumode = false;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("productId",_this.pid);
-        params.append("id",_this.scFrom1.id)
-        params.append("minAmount",_this.minAmount)
-        params.append("maxAmount",_this.maxAmount)
-        params.append("register",_this.register)
-        params.append("maxCapacityAmount",_this.maxCapacity)
-        params.append("config",_this.config)
-        axios.post("/sCell/changeSCell.action",params).then(function (response) {
+        params.append("paidAmountSum",_this.CapacityAmount);
+        params.append("productId",_this.scFrom4.productId);
+
+        if (_this.CapacityAmount.length<0){
+          alert("不能为空")
+        }
+        axios.post("/sPay/savDeliverySGatherDetails.action",params).then(function (response) {
           if (response.data == true) {
             _this.$notify({
               title: '成功',
-              message: '变更成功,但需要审核!',
+              message: '出库成功!',
               type: 'success'
             });
             _this.zdwinshow = false;
@@ -274,15 +327,29 @@
         this.zdwinshow = true;
         var _this = this;
         var params = new URLSearchParams();
-        console.log(row)
-        params.append("id",row.id);
+        params.append("payId",row.payId);
 
-
-        _this.pid=row.productId;
-        axios.post("/sCell/selectSCellbyid.action",params).then(function (response) {
+        axios.post("/sPay/querybypayId.action",params).then(function (response) {
           _this.scFrom=response.data;
           _this.scFrom1=response.data[0];
         }).catch();
+      },
+      diaodu(row){
+        this.diaodumode = true;
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("productId",row.productId);
+
+        axios.post("/dFile/querybyproductid.action",params).then(function (response) {
+          _this.scFrom3=response.data[0];
+        }).catch();
+        axios.post("/sGatherDetails/querybyproductid.action",params).then(function (response) {
+          _this.scFrom4=response.data[0];
+        }).catch();
+      },
+      fanhuei(){
+        this.diaodumode = false;
+        this.zdwinshow = true;
       }
     },
     created() {
@@ -298,5 +365,16 @@
     border-bottom: 1px solid black;
     background-color: transparent;
     outline: none;
+  }
+  .inputDeep>>>.el-input__inner {
+    border: 0;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button
+  {
+    -webkit-appearance:none ;
+  }
+  input[type="number"]{
+    -moz-appearance:textfield ;
   }
 </style>

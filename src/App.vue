@@ -56,6 +56,8 @@ import scell from "./components/view/scell/scell";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
 import SafetyStockConfigurationChange from "./components/view/scell/SafetyStockConfigurationChange";
 import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockConfigurationQuery";
+import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
+import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
 
 export default {
   name: 'app',
@@ -121,7 +123,8 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessFormulate,ProcessReview,ProcessChange,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    ,ProcessChange
   }
 }
 </script>

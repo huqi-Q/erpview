@@ -1,48 +1,56 @@
 <template>
   <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>安全库存配置查询</span>
+      </div>
+      <div slot="header" class="grid-content bg-purple">
+        <!--  条件查询-->
+        <el-form :inline="true">
+          <el-button type="success" @click="searchcartype">制定安全库存配置单</el-button>
 
-    <!--  条件查询-->
-    <el-form :inline="true">
-      <!--<el-form-item label="请选择产品I级分类">-->
-        <!--<el-select v-model="value" placeholder="请选择">-->
+          <!--<el-form-item label="请选择产品I级分类">-->
+          <!--<el-select v-model="value" placeholder="请选择">-->
           <!--<el-option-->
-            <!--v-for="item in options"-->
-            <!--:key="item.value"-->
-            <!--:label="item.label"-->
-            <!--:value="item.value">-->
+          <!--v-for="item in options"-->
+          <!--:key="item.value"-->
+          <!--:label="item.label"-->
+          <!--:value="item.value">-->
           <!--</el-option>-->
-        <!--</el-select>-->
-      <!--</el-form-item>-->
-      <!--<el-form-item label="请选择产品II级分类">-->
-        <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
-      <!--</el-form-item>-->
-      <!--<el-form-item label="请选择产品III级分类">-->
-        <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
-      <!--</el-form-item>-->
-      <el-form-item label="请选择产品">
-        <el-input placeholder="请输入备注" clearable v-model="name"></el-input>
-      </el-form-item>
-      <el-form-item label="请选择工序设计单状态">
-        <el-input placeholder="请输入备注" clearable v-model="remark"></el-input>
-      </el-form-item>
-      <!--<el-form-item label="请输入登记时间">-->
-        <!--<div class="block">-->
+          <!--</el-select>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="请选择产品II级分类">-->
+          <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="请选择产品III级分类">-->
+          <!--<el-input placeholder="请输入类型名字" clearable v-model="name"></el-input>-->
+          <!--</el-form-item>-->
+          <el-form-item label="请选择产品">
+            <el-input placeholder="请输入备注" clearable v-model="name"></el-input>
+          </el-form-item>
+          <el-form-item label="请选择工序设计单状态">
+            <el-input placeholder="请输入备注" clearable v-model="remark"></el-input>
+          </el-form-item>
+          <!--<el-form-item label="请输入登记时间">-->
+          <!--<div class="block">-->
           <!--<el-date-picker-->
-            <!--v-model="value2"-->
-            <!--type="daterange"-->
-            <!--align="right"-->
-            <!--unlink-panels-->
-            <!--range-separator="至"-->
-            <!--start-placeholder="开始日期"-->
-            <!--end-placeholder="结束日期"-->
-            <!--:shortcuts="shortcuts"-->
+          <!--v-model="value2"-->
+          <!--type="daterange"-->
+          <!--align="right"-->
+          <!--unlink-panels-->
+          <!--range-separator="至"-->
+          <!--start-placeholder="开始日期"-->
+          <!--end-placeholder="结束日期"-->
+          <!--:shortcuts="shortcuts"-->
           <!--&gt;-->
           <!--</el-date-picker>-->
-        <!--</div>-->
-      <!--</el-form-item>-->
+          <!--</div>-->
+          <!--</el-form-item>-->
 
-      <el-button type="success" @click="searchcartype">查询</el-button>
-    </el-form>
+          <el-button type="success" @click="searchcartype">查询</el-button>
+        </el-form>
+      </div>
+
 
 
     <!--表格 -->
@@ -79,6 +87,13 @@
           <span v-else style="color:orange">未通过</span>
         </template>
       </el-table-column>
+      <el-table-column prop="thirdKindName" label="操作">
+        <template slot-scope="scope">
+          <span v-if="scope.row.checkTag =='S001-0'" style="color:lawngreen"><a href="">撤回申请</a></span>
+          <span v-else-if="scope.row.checkTag == 'S001-1'" style="color:black"><a href="">移入回收站</a></span>
+          <span v-else style="color:orange"><a href="">查看原因并修改</a>  <a href="">取消</a></span>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页-->
     <el-pagination
@@ -91,8 +106,8 @@
       :total="total">
     </el-pagination>
 
-    <!--  设计单-->
-    <el-dialog width="80%" title="生产工序设计单" :visible="zdwinshow">
+    <!--  安全库存配置查询-->
+    <el-dialog width="80%" title="安全库存配置查询" :visible="zdwinshow">
 
       <el-form  :modal="scFrom1">
         <el-row>
@@ -165,7 +180,7 @@
         <el-button type="primary" @click.prevent="tianjia">确 定</el-button>
       </div>
     </el-dialog>
-
+    </el-card>
   </div>
 </template>
 <script>
@@ -281,5 +296,25 @@
     border-bottom: 1px solid black;
     background-color: transparent;
     outline: none;
+  }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: right;
+  }
+
+  .box-card {
+    width: 100%;
   }
 </style>
