@@ -153,7 +153,7 @@
                 <el-table-column
                   label="工时数">
                   <template slot-scope="scope">
-                    <input class="mbk" type="text"></input>
+                    <input class="mbk" v-model="labourHourAmount" type="text"></input>
                   </template>
                 </el-table-column>
                 <el-table-column

@@ -115,7 +115,7 @@
           <br>
           <br>
           <strong >设计人:</strong>
-          <input v-model="designer" class="xhx" style="width:300px"></input>
+          <input v-model="scFrom.register" class="xhx" style="width:300px"></input>
           </div>
         </el-col>
         <el-col :span="12">
@@ -138,41 +138,45 @@
                   width="55">
                 </el-table-column>
                 <el-table-column
-                  prop="typeName"
+                  prop="procedureName"
                   label="工序名称"
                   width="180">
                 </el-table-column>
                 <el-table-column
-                  prop="typeId"
+                  prop="procedureId"
                   label="工序编号">
                 </el-table-column>
                 <el-table-column
-                  prop="register"
+                  prop="procedureDescribe"
                   label="描述">
                 </el-table-column>
                 <el-table-column
+                  prop="labourHourAmount"
                   label="工时数">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="labourHourAmount" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="labourHourAmount" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="amountUnit"
                   label="工时单位">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="amountUnit" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="amountUnit" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="costPrice"
                   label="单位工时成本">
-                  <template slot-scope="scope">
-                    <input class="mbk" v-model="costPrice" type="text"></input>
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    <input class="mbk" v-model="costPrice" type="text"></input>-->
+<!--                  </template>-->
                 </el-table-column>
                 <el-table-column
+                  prop="subtotal"
                   label="工时成本小计(元)">
-                  <template slot-scope="scope">
-                    {{labourHourAmount*costPrice}}
-                  </template>
+<!--                  <template slot-scope="scope">-->
+<!--                    {{labourHourAmount*costPrice}}-->
+<!--                  </template>-->
                 </el-table-column>
               </el-table>
             </div>
