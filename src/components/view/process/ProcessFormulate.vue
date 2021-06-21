@@ -371,6 +371,7 @@
                   },
                   scgx(){
                     var _this = this;
+                    //添加工序批量拿值
                     var arr = this.manufactureData;
                     let newArr = [];
                     arr.map((item, index) => {

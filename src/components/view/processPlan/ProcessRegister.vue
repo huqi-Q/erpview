@@ -64,10 +64,8 @@
                 </template>
               </el-table-column>
               <el-table-column
+                prop="amountUnit"
                 label="单位">
-                <template slot-scope="scope">
-                  <input class="mbk" v-model="amountUnit" type="text"></input>
-                </template>
               </el-table-column>
               <el-table-column
                 label="单价（元）">
@@ -220,8 +218,6 @@
           this.$axios.post("/dFile/selectallDFile", params).then(function (response) {
             _this.tableData = response.data.records;
             _this.total = response.data.total;
-            // _this.firstKindName = response.data.records[0].firstKindName;
-            // _this.firstKindId = response.data.records[0].firstKindId;
           }).catch();
 
 
@@ -281,42 +277,34 @@
         },
         scgx(){
           var _this = this;
-          var arr = this.manufactureData;
+          var arr = this.scgxtableData;
           let newArr = [];
           arr.map((item, index) => {
             newArr.push(
               Object.assign({}, item, {
-                "detailsNumber":item.id,
-                "procedureId":item.typeId,
-                "procedureName":item.typeName,
-                "labourHourAmount":this.labourHourAmount,
-                "amountUnit":this.amountUnit,
-                "costPrice":this.costPrice,
-                "productId1":this.scFrom.productId,
-                "productName1":this.scFrom.productName,
-                "designer1":this.designer
+                "amount":this.amount
               })
             )
           })
 
-          this.$confirm('确定设计产品:  '+this.scFrom.productName+' ?', '提示', {
+          this.$confirm('确定制定该计划单?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.$axios.post("/mDesignProcedure/addProcedure.action",JSON.stringify(newArr)
+            this.$axios.post("/mApply/addMApply",JSON.stringify(newArr)
               ,{headers:{"Content-Type":"application/json"}}
             ).then(function (response) {}).catch();
             this.getdata();
             this.$message({
               type: 'success',
-              message: '设计成功!'
+              message: '制定成功!'
             });
             this.zdwinshow = false;
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: '已取消设计'
+              message: '已取消制定'
             });
           });
 
