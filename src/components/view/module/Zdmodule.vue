@@ -1,6 +1,6 @@
 <template>
 <div>
-<!--产品档案查询-->
+<!--制定物料组成设计单-->
   <!--  条件查询-->
   <el-form ref="productFrom"  :inline="true">
     <el-form-item label="请选择产品I级分类">
@@ -105,8 +105,10 @@
       </template>
     </el-table-column>
     <el-table-column
-      prop="responsiblePerson"
-      label="产品经理">
+      label="制定设计单">
+      <template slot-scope="scope">
+        <a href="#" @click.prevent='zd(scope.row.productId)'>制定设计单</a>
+      </template>
     </el-table-column>
   </el-table>
   <!-- 分页-->
@@ -119,23 +121,209 @@
     layout="total, sizes, prev, pager, next, jumper"
     :total="total">
   </el-pagination>
+  <!--  设计单-->
+  <el-dialog width="80%" title="制定物料组成设计单" :visible="zdwinshow">
+
+    <el-form  :modal="scFrom">
+      <el-row>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <strong style="margin-right: 220px">产  品  名  称  :  {{scFrom.productName}}</strong>
+            <br>
+            <br>
+            <strong >设计人:</strong>
+            <input v-model="designer" class="xhx" style="width:300px"></input>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple-light">
+            <strong>产  品   编 号  :  {{scFrom.productId}}</strong>
+          </div>
+        </el-col>
+      </el-row>
+      <br>
+      <!--生产工序-->
+      <div>
+        <el-table
+          :data="scgxtableData"
+          stripe
+          border
+          :cell-style="changeCellStyle"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            prop="productId"
+            label="物料编号">
+          </el-table-column>
+          <el-table-column
+            prop="productName"
+            label="物料名称"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="type"
+            label="用途类型">
+          </el-table-column>
+          <el-table-column
+            prop="productDescribe"
+            label="描述">
+          </el-table-column>
+          <el-table-column
+            prop="amount"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="amountUnit"
+            label="单位">
+          </el-table-column>
+          <el-table-column
+            prop="costPrice"
+            label="计划成本单价(元)">
+          </el-table-column>
+          <el-table-column
+            prop="subtotal"
+            label="小计(元)">
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <el-row>
+        <el-col :span="12"><div class="grid-content bg-purple">
+          <strong >登记人:</strong>
+          <input class="xhx" value="dd" disabled="disabled" style="width:300px"></input>
+        </div></el-col>
+        <el-col :span="12"><div class="grid-content bg-purple-light">
+          <strong>登  记  时  间:  {{currentTime}}</strong>
+        </div></el-col>
+      </el-row>
+      <br>
+      <div style="margin-right:40px">
+        <strong>设计要求</strong>
+        <textarea style="width:950px;height: 100px">
+
+      </textarea>
+      </div>
+      <br>
+
+      <div>
+        <el-button @click="tjmoduletb">添加物料</el-button>
+        <el-button @click="scmodule">删除物料</el-button>
+      </div>
+
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="zdwinshow = false">取 消</el-button>
+      <el-button type="primary">确 定</el-button>
+    </div>
+  </el-dialog>
+
+  <!--弹出添加物料的模态框-->
+  <el-dialog width="80%" title="添加物料" :visible="tjmoduletb1">
+    <el-form  :modal="addmoduleFrom">
+      <!--生产工序-->
+      <div>
+        <el-table
+          :data="manufactureData"
+          stripe
+          border
+          :cell-style="changeCellStyle"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            prop="productId"
+            label="物料编号">
+          </el-table-column>
+          <el-table-column
+            prop="productName"
+            label="物料名称"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="type"
+            label="用途类型">
+            <template slot-scope="scope">
+              <span v-if="scope.row.type =='Y001-1'">商品</span>
+              <span v-else="scope.row.type == 'Y001-2'">物料</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="productDescribe"
+            label="物料描述">
+          </el-table-column>
+          <el-table-column
+            prop="amountUnit"
+            label="单位">
+          </el-table-column>
+          <el-table-column
+            prop="costPrice"
+            label="计划成本单价(元)">
+          </el-table-column>
+          <el-table-column
+            label="添加">
+            <a href="#" @click.prevent='tjwl(scope.row)'>添加</a>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <el-row>
+        <el-col :span="12"><div class="grid-content bg-purple">
+          <strong >登记人:</strong>
+          <input class="xhx" value="dd" disabled="disabled" style="width:300px"></input>
+        </div></el-col>
+        <el-col :span="12"><div class="grid-content bg-purple-light">
+          <strong>登  记  时  间:  {{currentTime}}</strong>
+        </div></el-col>
+      </el-row>
+      <br>
+      <div style="margin-right:40px">
+        <strong>设计要求</strong>
+        <textarea style="width:950px;height: 100px">
+
+      </textarea>
+      </div>
+      <br>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="tjmoduletb1 = false">返 回</el-button>
+      <el-button type="primary">添 加</el-button>
+    </div>
+  </el-dialog>
+
+
+
+
+
+
+
+
+
+
 
   </div>
   </template>
 
           <script>
               export default {
-                  name: "QueryallDFile",
+                  name: "Zdmodule",
                 data() {
                   return {
                     tableData: [],
+                    tjmoduletb1:false,
                     scgxtableData:[],
+                    addmoduleFrom:[],
                     currentTime:new Date(),
                     zdwinshow: false,
                     gxwinshow:false,
                     scFrom:{},
                     manufactureData:[],
                     options:[],
+                    designer:"jj",
                     value:"",
                     pageno: 1,
                     pagesize: 5,
@@ -199,13 +387,15 @@
                       return ''
                     }
                   },
-                  /*tjgxtb(){
+                  //添加物料
+                  tjmoduletb(){
                     var _this = this;
-                    this.gxwinshow = true;
-                    this.$axios.post("/manufactureList/queryallmanufactureList.action").then(function (response) {
-                      _this.manufactureData = response.data;
+                    this.tjmoduletb1 = true;
+                    //异步查询所有物料
+                    this.$axios.post("/dModuleDetails/queryallDModule").then(function (response) {
+                      _this.manufactureData = response.data.records;
                     }).catch();
-                  },*/
+                  },
                   handleSizeChange(val) {  //页size变更
                     this.pagesize = val;
                     this.pageno = 1;
@@ -235,7 +425,7 @@
                   tjgx(row){
                     this.scgxtableData.push(row);
                   },
-                  scgx(){
+                  scmodule(){
 
                   }
                 },

@@ -31,7 +31,6 @@
         <el-col :span="8">
           <el-form-item label="II级分类" prop="secondKindId">
             <el-select v-model="ruleForm.secondKindId" @change="getdataConfig" placeholder="请选择分类">
-              <!--            <el-option label="区域一" value="shanghai"></el-option>-->
               <el-option
                 v-for="items in configs1"
                 :key="items.kindId"
@@ -44,7 +43,6 @@
         <el-col :span="8">
           <el-form-item label="III级分类" prop="thirdKindId">
             <el-select v-model="ruleForm.thirdKindId" placeholder="请选择分类" @change="getdataConfig">
-              <!--            <el-option label="区域一" value="shanghai"></el-option>-->
               <el-option
                 v-for="items1 in configs2"
                 :key="items1.kindId"

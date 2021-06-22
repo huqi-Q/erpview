@@ -59,6 +59,11 @@ import addDFile from "./components/view/dfile/addDFile";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
 import SafetyStockConfigurationChange from "./components/view/scell/SafetyStockConfigurationChange";
 import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockConfigurationQuery";
+import recheckDFile from "./components/view/dfile/recheckDFile";
+import delDFile from "./components/view/dfile/delDFile";
+import delRecover from "./components/view/dfile/delRecover";
+import delDFileForever from "./components/view/dfile/delDFileForever";
+
 import GxdList from "./components/view/gxwl/GxdList";
 import GxdShList from "./components/view/gxwl/GxdShList";
 import GxdBgList from "./components/view/gxwl/GxdBgList";
@@ -69,6 +74,9 @@ import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliv
 import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
 import SgatherQuery from "./components/view/sgather/SgatherQuery";
 import Dynamicinventoryquery from "./components/view/Dynamicinventory/Dynamicinventoryquery";
+import Zdmodule from "./components/view/module/Zdmodule";
+
+
 
 export default {
   name: 'app',
@@ -134,18 +142,18 @@ export default {
     this.getmenudata();
   },
   components:{
-    ProcessList,Welcome,ProcessFormulate,QueryallDFile,updateDFile,addDFile,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
-    GxdList,GxdShList
-    ,GxdBgList,GxdCxList,ProcessFormulate,
-    ProcessReview,scell,SafetyStockAudit,
-    SafetyStockConfigurationChange,
-    SafetyStockConfigurationQuery,
-    ProcessList,Welcome,
-    ProcessChange,Sgather
-    ,ProcessRegister,
-    Makestockinorder,Makedeliveryorder
-    ,
-    ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    QueryallDFile,
+    updateDFile,addDFile,recheckDFile,delDFile,
+    delRecover,delDFileForever,Zdmodule,
+    ProcessChange,Sgather,
+    ProcessRegister,GxdCxList,
+    GxdBgList,GxdShList,GxdList,
+    Dynamicinventoryquery,
+    SgatherQuery,Outboundapplicationregistration,
+    Makestockinorder,Makedeliveryorder,ProcessList
+    ,Welcome,ProcessFormulate,ProcessReview,scell,
+    SafetyStockAudit,SafetyStockConfigurationChange,
+    SafetyStockConfigurationQuery
   }
 }
 </script>
