@@ -49,7 +49,12 @@
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
       <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="type" label="用途类型"></el-table-column>
+      <el-table-column prop="type" label="用途类型">
+        <template scope="scope">
+          <p v-if="scope.row.type=='Y001-1'">商品</p>
+          <p v-if="scope.row.type=='Y001-2'">物料</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="firstKindName" label="档次级别"></el-table-column>
       <el-table-column prop="firstKindName" label="一级分类"></el-table-column>
       <el-table-column prop="secondKindName" label="二级分类"></el-table-column>
@@ -128,7 +133,9 @@
         <div>
           <el-table :data="scFrom" stripe border style="width: 100%">
             <el-table-column prop="id" v-model="id" label="序号" width="180"></el-table-column>
-            <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
+            <el-table-column prop="warehouseName" label="库房名称">
+              <p>长沙分部</p>
+            </el-table-column>
             <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
             <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
             <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="scFrom1.maxCapacityAmount"/></el-table-column>
@@ -304,7 +311,7 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("id",id);
-        axios.post("/sCell/selectSCellbyid.action",params).then(function (response) {
+        axios.post("/sCell/selectSCellbyids.action",params).then(function (response) {
           _this.scFrom=response.data;
           _this.scFrom1=response.data[0];
         }).catch();

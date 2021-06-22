@@ -63,6 +63,9 @@ import GxdCxList from "./components/view/gxwl/GxdCxList";
 import ProcessRegister from "./components/view/processPlan/ProcessRegister";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
+import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
+import SgatherQuery from "./components/view/sgather/SgatherQuery";
+import Dynamicinventoryquery from "./components/view/Dynamicinventory/Dynamicinventoryquery";
 
 export default {
   name: 'app',
@@ -128,16 +131,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    GxdList,GxdShList
-    ,GxdBgList,GxdCxList,ProcessFormulate,
-    ProcessReview,scell,SafetyStockAudit,
-    SafetyStockConfigurationChange,
-    SafetyStockConfigurationQuery,
-    ProcessList,Welcome,
-    ProcessChange,Sgather
-    ,ProcessRegister,
-    Makestockinorder,Makedeliveryorder
-    ,
+    ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
   }
 }
 </script>
