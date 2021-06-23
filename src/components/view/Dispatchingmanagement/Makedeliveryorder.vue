@@ -1,6 +1,6 @@
 <template>
   <div>
-
+<h1>出库</h1>
     <!--  条件查询-->
     <el-form :inline="true">
       <!--<el-form-item label="请选择产品I级分类">-->
@@ -300,7 +300,7 @@
         this.diaodumode = false;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("paidAmountSum",_this.CapacityAmount);
+        params.append("paidAmount",_this.CapacityAmount);
         params.append("productId",_this.scFrom4.productId);
 
         if (_this.CapacityAmount.length<0){
@@ -322,6 +322,7 @@
             });}
           _this.getdata();
         }).catch();
+        // _this.CapacityAmount= '';
       },
       zhidin(row){
         this.zdwinshow = true;

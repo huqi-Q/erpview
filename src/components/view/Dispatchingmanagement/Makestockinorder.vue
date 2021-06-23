@@ -1,6 +1,6 @@
 <template>
   <div>
-
+  <h1>入库</h1>
     <!--  条件查询-->
     <el-form :inline="true">
       <!--<el-form-item label="请选择产品I级分类">-->
@@ -319,6 +319,8 @@
             });}
           _this.getdata();
         }).catch();
+
+        _this.CapacityAmount = '';
       },
       zhidin(row){
         this.zdwinshow = true;

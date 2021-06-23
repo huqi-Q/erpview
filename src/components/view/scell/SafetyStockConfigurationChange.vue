@@ -49,7 +49,12 @@
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
       <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="type" label="用途类型"></el-table-column>
+      <el-table-column prop="type" label="用途类型">
+        <template scope="scope">
+          <p v-if="scope.row.type=='Y001-1'">商品</p>
+          <p v-if="scope.row.type=='Y001-2'">物料</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="firstKindName" label="档次级别"></el-table-column>
       <el-table-column prop="firstKindName" label="一级分类"></el-table-column>
       <el-table-column prop="secondKindName" label="二级分类"></el-table-column>
@@ -101,7 +106,7 @@
               <br>
               <br>
               <strong >警报下限次数:</strong>
-              <input class="xhx" style="width:200px" value="dwef" v-model="minAmount"></input>
+              <input class="xhx" style="width:200px" value="dwef" v-model="scFrom1.minAmount"></input>
             </div>
           </el-col>
           <el-col :span="12">
@@ -112,14 +117,14 @@
           <div class="grid-content bg-purple">
             <br>
             <strong >警报上限次数:</strong>
-            <input class="xhx" style="width:200px" v-model="maxAmount"></input>
+            <input class="xhx" style="width:200px" v-model="scFrom1.maxAmount"></input>
           </div>
         </el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple">
               <br>
               <strong >设计人:</strong>
-              <input class="xhx" style="width:200px" v-model="register"></input>
+              <input class="xhx" style="width:200px" v-model="scFrom1.register"></input>
             </div>
           </el-col>
         </el-row>
@@ -131,7 +136,7 @@
             <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
             <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
             <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
-            <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="maxCapacity"/></el-table-column>
+            <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="scFrom1.maxCapacity"/></el-table-column>
             <!--<el-table-column prop="responsiblePerson" label="工时成本小计(元)">-->
             <!--</el-table-column>-->
           </el-table>
@@ -142,7 +147,7 @@
           <br>
           <el-col :span="12"><div class="grid-content bg-purple">
             <strong >登记人:</strong>
-            <input class="xhx" type="text"  style="width:200px" v-model="register"></input>
+            <input class="xhx" type="text"  style="width:200px" v-model="scFrom1.register"></input>
           </div></el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
@@ -155,7 +160,7 @@
         <br>
         <div style="margin-right:40px">
           <el-form-item label="设计要求">
-            <el-input type="textarea" v-model="config"></el-input>
+            <el-input type="textarea" v-model="scFrom1.config"></el-input>
           </el-form-item>
         </div>
       </el-form>
@@ -248,11 +253,11 @@
         var params = new URLSearchParams();
         params.append("productId",_this.pid);
         params.append("id",_this.scFrom1.id)
-        params.append("minAmount",_this.minAmount)
-        params.append("maxAmount",_this.maxAmount)
-        params.append("register",_this.register)
-        params.append("maxCapacityAmount",_this.maxCapacity)
-        params.append("config",_this.config)
+        params.append("minAmount",_this.scFrom1.minAmount)
+        params.append("maxAmount",_this.scFrom1.maxAmount)
+        params.append("register",_this.scFrom1.register)
+        params.append("maxCapacityAmount",_this.scFrom1.maxCapacity)
+        params.append("config",_this.scFrom1.config)
         axios.post("/sCell/changeSCell.action",params).then(function (response) {
           if (response.data == true) {
             _this.$notify({
@@ -276,10 +281,8 @@
         var params = new URLSearchParams();
         console.log(row)
         params.append("id",row.id);
-
-
         _this.pid=row.productId;
-        axios.post("/sCell/selectSCellbyid.action",params).then(function (response) {
+        axios.post("/sCell/selectSCellbyids.action",params).then(function (response) {
           _this.scFrom=response.data;
           _this.scFrom1=response.data[0];
         }).catch();

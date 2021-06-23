@@ -2,12 +2,12 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>安全库存配置查询</span>
+        <span>动态库存查询</span>
       </div>
       <div slot="header" class="grid-content bg-purple">
         <!--  条件查询-->
         <el-form :inline="true">
-          <el-button type="success" @click="searchcartype">制定安全库存配置单</el-button>
+          <!--<el-button type="success" @click="searchcartype">制定安全库存配置单</el-button>-->
 
           <!--<el-form-item label="请选择产品I级分类">-->
           <!--<el-select v-model="value" placeholder="请选择">-->
@@ -57,12 +57,7 @@
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
       <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="type" label="用途类型">
-        <template scope="scope">
-          <p v-if="scope.row.type=='Y001-1'">商品</p>
-          <p v-if="scope.row.type=='Y001-2'">物料</p>
-        </template>
-      </el-table-column>
+      <el-table-column prop="type" label="用途类型"></el-table-column>
       <el-table-column prop="firstKindName" label="档次级别"></el-table-column>
       <el-table-column prop="firstKindName" label="一级分类"></el-table-column>
       <el-table-column prop="secondKindName" label="二级分类"></el-table-column>
