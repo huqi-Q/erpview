@@ -62,8 +62,6 @@ import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockCo
 import recheckDFile from "./components/view/dfile/recheckDFile";
 import delDFile from "./components/view/dfile/delDFile";
 import delRecover from "./components/view/dfile/delRecover";
-import delDFileForever from "./components/view/dfile/delDFileForever";
-
 import GxdList from "./components/view/gxwl/GxdList";
 import GxdShList from "./components/view/gxwl/GxdShList";
 import GxdBgList from "./components/view/gxwl/GxdBgList";
@@ -71,6 +69,11 @@ import GxdCxList from "./components/view/gxwl/GxdCxList";
 import ProcessRegister from "./components/view/processPlan/ProcessRegister";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
+import PlanReview from "./components/view/processPlan/PlanReview";
+import PlanList from "./components/view/processPlan/PlanList";
+import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
+import DispatchList from "./components/view/dispatch/DispatchList";
+import DispatchReview from "./components/view/dispatch/DispatchReview";
 import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
 import SgatherQuery from "./components/view/sgather/SgatherQuery";
 import Dynamicinventoryquery from "./components/view/Dynamicinventory/Dynamicinventoryquery";
@@ -144,16 +147,19 @@ export default {
   components:{
     QueryallDFile,
     updateDFile,addDFile,recheckDFile,delDFile,
-    delRecover,delDFileForever,Zdmodule,
-    ProcessChange,Sgather,
-    ProcessRegister,GxdCxList,
-    GxdBgList,GxdShList,GxdList,
+    delRecover,Zdmodule,
     Dynamicinventoryquery,
     SgatherQuery,Outboundapplicationregistration,
-    Makestockinorder,Makedeliveryorder,ProcessList
-    ,Welcome,ProcessFormulate,ProcessReview,scell,
-    SafetyStockAudit,SafetyStockConfigurationChange,
-    SafetyStockConfigurationQuery
+    GxdList,GxdShList
+    ,GxdBgList,GxdCxList,ProcessFormulate,
+    ProcessReview,scell,SafetyStockAudit,
+    SafetyStockConfigurationChange,
+    SafetyStockConfigurationQuery,
+    ProcessList,Welcome,
+    ProcessChange,Sgather
+    ,ProcessRegister,
+    Makestockinorder,Makedeliveryorder
+    ,PlanReview,PlanList,DevelopDispatch,DispatchList,DispatchReview
   }
 }
 </script>

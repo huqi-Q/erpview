@@ -95,7 +95,6 @@
             <el-button @click="scgx">删除产品</el-button>
             <el-button type="primary" @click="scgx">确定</el-button>
           </div>
-
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="qx">取 消</el-button>
@@ -173,7 +172,7 @@
           costPrice:0,
           manufactureData:[],
           options:[],
-          designer:"",
+          designer:"hh",
           value:"",
           pageno: 1,
           pagesize: 5,
@@ -278,13 +277,18 @@
         scgx(){
           var _this = this;
           var arr = this.scgxtableData;
-          let newArr = [];
-          arr.map((item, index) => {
-            newArr.push(
-              Object.assign({}, item, {
-                "amount":this.amount
-              })
-            )
+          var newArr = [];
+
+          arr.forEach(function(item, index){
+            console.log(item);
+            var dx = {};
+            dx.productId=item.productId
+            dx.productName=item.productName
+            dx.productDescribe=item.productDescribe
+            dx.amount=_this.labourHourAmount
+            dx.type=item.type
+            dx.designer=_this.designer
+            newArr.push(dx)
           })
 
           this.$confirm('确定制定该计划单?', '提示', {
@@ -300,6 +304,7 @@
               type: 'success',
               message: '制定成功!'
             });
+            this.scgxtableData=[];
             this.zdwinshow = false;
           }).catch(() => {
             this.$message({

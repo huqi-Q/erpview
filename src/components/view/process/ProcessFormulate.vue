@@ -105,7 +105,7 @@
   </el-pagination>
 
 <!--  设计单-->
-  <el-dialog width="80%" title="生产工序设计单" :visible="zdwinshow">
+  <el-dialog width="80%" title="生产工序设计单" :visible="zdwinshow" :before-close="handleClose">
 
     <el-form  :modal="scFrom">
       <el-row>
@@ -369,7 +369,8 @@
                   tjgx(row){
                       this.scgxtableData.push(row);
                   },
-                  scgx(){
+                  handleClose(done) { this.$confirm('确认关闭？') .then(_ => { done(); }) .catch(_ => {}); }
+                  ,scgx(){
                     var _this = this;
                     //添加工序批量拿值
                     var arr = this.manufactureData;
