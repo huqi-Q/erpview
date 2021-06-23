@@ -2,7 +2,7 @@
   <div id="app" class="homeWrap">
     <el-container style="height: 100%;">
       <el-header style="height: 80px; position: fixed; z-index: 1; width: 100%">ERP管理系统</el-header>
-<!--      <el-header height="60px" id="admintp">admin</el-header>-->
+        <!--      <el-header height="60px" id="admintp">admin</el-header>-->
 
       <el-container style="padding-top: 80px; height: 100%;">
         <el-aside style="width: 240px;">
@@ -142,18 +142,7 @@ export default {
     this.getmenudata();
   },
   components:{
-    QueryallDFile,
-    updateDFile,addDFile,recheckDFile,delDFile,
-    delRecover,delDFileForever,Zdmodule,
-    ProcessChange,Sgather,
-    ProcessRegister,GxdCxList,
-    GxdBgList,GxdShList,GxdList,
-    Dynamicinventoryquery,
-    SgatherQuery,Outboundapplicationregistration,
-    Makestockinorder,Makedeliveryorder,ProcessList
-    ,Welcome,ProcessFormulate,ProcessReview,scell,
-    SafetyStockAudit,SafetyStockConfigurationChange,
-    SafetyStockConfigurationQuery
+    Sgather,ProcessChange,ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
   }
 }
 </script>
