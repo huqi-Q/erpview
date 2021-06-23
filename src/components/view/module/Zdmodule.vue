@@ -29,16 +29,7 @@
           :value="firstKindId">
         </el-option>
       </el-select>
-    </el-form-item>
-    <el-form-item label="请选择产品用途类型">
-      <el-select v-model="value" placeholder="请选择">
-        <el-option
-          :key="firstKindId"
-          :label="firstKindName"
-          :value="firstKindId">
-        </el-option>
-      </el-select>
-    </el-form-item>
+    </el-form-item><br>
     <el-form-item label="请输入登记时间">
       <div class="block">
         <el-date-picker
@@ -166,6 +157,10 @@
           <el-table-column
             prop="type"
             label="用途类型">
+            <template slot-scope="scope">
+              <span v-if="scope.row.type =='Y001-1'">商品</span>
+              <span v-else="scope.row.type == 'Y001-2'">物料</span>
+            </template>
           </el-table-column>
           <el-table-column
             prop="productDescribe"
@@ -174,6 +169,9 @@
           <el-table-column
             prop="amount"
             label="数量">
+            <template slot-scope="scope">
+              <input class="mbk" v-model="addmodulemount" type="text"></input>
+            </template>
           </el-table-column>
           <el-table-column
             prop="amountUnit"
@@ -183,9 +181,12 @@
             prop="costPrice"
             label="计划成本单价(元)">
           </el-table-column>
-          <el-table-column
+                <el-table-column
             prop="subtotal"
             label="小计(元)">
+            <template slot-scope="scope">
+              {{addmodulemount*scope.row.costPrice}}
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -216,7 +217,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="zdwinshow = false">取 消</el-button>
-      <el-button type="primary">确 定</el-button>
+      <el-button type="primary" @click="addmodule">确 定</el-button>
     </div>
   </el-dialog>
 
@@ -266,7 +267,9 @@
           </el-table-column>
           <el-table-column
             label="添加">
+            <template slot-scope="scope">
             <a href="#" @click.prevent='tjwl(scope.row)'>添加</a>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -320,6 +323,7 @@
                     currentTime:new Date(),
                     zdwinshow: false,
                     gxwinshow:false,
+                    addmodulemount:1,
                     scFrom:{},
                     manufactureData:[],
                     options:[],
@@ -365,15 +369,12 @@
                     params.append("pageno", this.pageno);
                     params.append("pagesize", this.pagesize);
                     //产品档案
-                    this.$axios.post("/dFile/queryallDFile", params).then(function (response) {
+                    this.$axios.post("/dFile/queryallDFileShop", params).then(function (response) {
                       _this.tableData = response.data.records;
                       _this.total = response.data.total;
                       _this.firstKindName = response.data.records[0].firstKindName;
                       _this.firstKindId = response.data.records[0].firstKindId;
                     }).catch();
-
-
-
                   },
                   changeCellStyle (row, column, rowIndex, columnIndex) {
                     if(row.column.label === "工时数"){
@@ -395,6 +396,9 @@
                     this.$axios.post("/dModuleDetails/queryallDModule").then(function (response) {
                       _this.manufactureData = response.data.records;
                     }).catch();
+                  },
+                  tjwl(row){
+                    this.scgxtableData.push(row);
                   },
                   handleSizeChange(val) {  //页size变更
                     this.pagesize = val;
@@ -428,6 +432,8 @@
                   scmodule(){
 
                   }
+                },addmodule(){
+
                 },
                 created() {
                   this.getdata();
