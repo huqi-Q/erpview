@@ -67,6 +67,7 @@ import GxdShList from "./components/view/gxwl/GxdShList";
 import GxdBgList from "./components/view/gxwl/GxdBgList";
 import GxdCxList from "./components/view/gxwl/GxdCxList";
 import ProcessRegister from "./components/view/processPlan/ProcessRegister";
+import SgatherAudit from "./components/view/sgather/SgatherAudit";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
 import PlanReview from "./components/view/processPlan/PlanReview";
@@ -78,6 +79,7 @@ import Outboundapplicationregistration from "./components/view/Issueapplicationm
 import SgatherQuery from "./components/view/sgather/SgatherQuery";
 import Dynamicinventoryquery from "./components/view/Dynamicinventory/Dynamicinventoryquery";
 import Zdmodule from "./components/view/module/Zdmodule";
+
 
 
 
@@ -145,21 +147,10 @@ export default {
     this.getmenudata();
   },
   components:{
-    QueryallDFile,
-    updateDFile,addDFile,recheckDFile,delDFile,
-    delRecover,Zdmodule,
-    Dynamicinventoryquery,
-    SgatherQuery,Outboundapplicationregistration,
-    GxdList,GxdShList
-    ,GxdBgList,GxdCxList,ProcessFormulate,
-    ProcessReview,scell,SafetyStockAudit,
-    SafetyStockConfigurationChange,
-    SafetyStockConfigurationQuery,
-    ProcessList,Welcome,
-    ProcessChange,Sgather
-    ,ProcessRegister,
-    Makestockinorder,Makedeliveryorder
-    ,PlanReview,PlanList,DevelopDispatch,DispatchList,DispatchReview
+    Makestockinorder,Sgather,SgatherAudit,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    ,ProcessList,Welcome,ProcessChange,GxdList,GxdShList,GxdBgList,GxdCxList,Outboundapplicationregistration,SgatherQuery,Dynamicinventoryquery
+    ,ProcessRegister,Makedeliveryorder
+    ,
   }
 }
 </script>
