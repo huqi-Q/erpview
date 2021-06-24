@@ -55,43 +55,19 @@
 
     <!--表格 -->
     <el-table :data="tableData" stripe border style="width: 100%">
-      <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
-      <el-table-column prop="productName" label="产品名称"></el-table-column>
-      <el-table-column prop="type" label="用途类型"></el-table-column>
-      <el-table-column prop="firstKindName" label="档次级别"></el-table-column>
-      <el-table-column prop="firstKindName" label="一级分类"></el-table-column>
-      <el-table-column prop="secondKindName" label="二级分类"></el-table-column>
-      <el-table-column prop="thirdKindName" label="三级分类"></el-table-column>
-
-      <!--<el-table-column-->
-        <!--prop="checkTag"-->
-        <!--label="设计单状态">-->
-        <!--<template slot-scope="scope">-->
-                    <!--<span v-if="scope.row.checkTag =='S001-0'"-->
-                          <!--style="color:lawngreen"-->
-                    <!--&gt;执行</span>-->
-          <!--<span-->
-            <!--v-else-if="scope.row.checkTag == 'S001-1'"-->
-            <!--style="color:black"-->
-          <!--&gt;完成</span>-->
-          <!--<span-->
-            <!--v-else-->
-            <!--style="color:orange"-->
-          <!--&gt;等待</span>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column prop="gatherId" label="申请单编号" width="180">
+        <template  slot-scope="scope">
+          <a @click="cancelDialog(scope.row)" style="color:blue;cursor:pointer">{{scope.row.gatherId}}</a>
+        </template>
+      </el-table-column>
+      <el-table-column prop="reason" label="入库理由"></el-table-column>
+      <el-table-column prop="registerTime" label="登记时间"></el-table-column>
+      <el-table-column prop="amountSum" label="总件数"></el-table-column>
       <el-table-column prop="checkTag" label="审核状态">
         <template slot-scope="scope">
           <span v-if="scope.row.checkTag =='S001-0'" style="color:lawngreen">等待审核</span>
           <span v-else-if="scope.row.checkTag == 'S001-1'" style="color:black">审核通过</span>
           <span v-else style="color:orange">未通过</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="thirdKindName" label="操作">
-        <template slot-scope="scope">
-          <span v-if="scope.row.checkTag =='S001-0'" style="color:lawngreen"><a href="">撤回申请</a></span>
-          <span v-else-if="scope.row.checkTag == 'S001-1'" style="color:black"><a href="">移入回收站</a></span>
-          <span v-else style="color:orange"><a href="">查看原因并修改</a>  <a href="">取消</a></span>
         </template>
       </el-table-column>
     </el-table>
@@ -106,80 +82,87 @@
       :total="total">
     </el-pagination>
 
-    <!--  安全库存配置查询-->
-    <el-dialog width="80%" title="安全库存配置查询" :visible="zdwinshow">
+    <!--  入库申请查询-->
+      <el-dialog width="80%" title="入库申请登记复核" :visible="zdwinshow">
 
-      <el-form  :modal="scFrom1">
-        <el-row>
-          <el-col :span="12">
-            <div class="grid-content bg-purple">
-              <strong style="margin-right: 220px">产  品  名  称  :  {{scFrom1.productName}}</strong>
-              <br>
-              <br>
-              <strong >警报下限次数:</strong>
-              <input class="xhx" style="width:200px" value="dwef" v-model="minAmount"></input>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple-light">
-              <strong>产  品   编 号  :  {{scFrom1.productId}}</strong>
-            </div>
-          </el-col><el-col :span="12">
-          <div class="grid-content bg-purple">
-            <br>
-            <strong >警报上限次数:</strong>
-            <input class="xhx" style="width:200px" v-model="maxAmount"></input>
-          </div>
-          </el-col>
-          <el-col :span="12">
-          <div class="grid-content bg-purple">
-            <br>
-            <strong >设计人:</strong>
-            <input class="xhx" style="width:200px" v-model="register"></input>
-          </div>
-        </el-col>
-        </el-row>
-        <br>
-        <!--生产工序-->
-        <div>
-          <el-table :data="scFrom" stripe border style="width: 100%">
-            <el-table-column prop="id" label="序号" width="180"></el-table-column>
-            <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
-            <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
-            <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
-            <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="maxCapacity"/></el-table-column>
-            <!--<el-table-column prop="responsiblePerson" label="工时成本小计(元)">-->
-            <!--</el-table-column>-->
-          </el-table>
-        </div>
+        <el-form  :modal="scFrom1">
+          <el-row>
+            <el-col :span="12">
+              <div class="grid-content bg-purple">
+                <strong style="margin-right: 220px">申 请 单 编 号  :  {{scFrom2.gatherId}}</strong>
+                <br>
+                <br>
+                <strong style="margin-right: 220px">入 库 人  :  {{scFrom2.storer}}</strong>
+                <br>
+                <br>
+              </div>
+            </el-col>
+            <el-col :span="12">
 
-        <el-row>
+              <div class="grid-content bg-purple-light">
+                <strong>入 库 理 由  :
+                  <span v-if="scFrom2.reason =='R001-1'" >生产入库</span>
+                  <span v-else-if="scFrom2.reason == 'R001-2'">库存初始</span>
+                  <span v-else-if="scFrom2.reason == 'R001-3'">赠送</span>
+                  <span v-else-if="scFrom2.reason == 'R001-4'">内部归还</span>
+                  <span v-else >其他归还</span>
+                </strong>
+
+
+              </div>
+            </el-col>
+          </el-row>
+          <br>
+          <!--生产工序-->
+          <div>
+            <el-table :data="tableData1" stripe border style="width: 100%">
+              <el-table-column prop="productName" label="产品名称" width="180"></el-table-column>
+              <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
+              <el-table-column prop="productDescribe" label="描述" width="180"></el-table-column>
+              <el-table-column prop="amount" label="数量"></el-table-column>
+              <el-table-column prop="amountUnit" label="单位"></el-table-column>
+              <el-table-column prop="realCostPrice" label="成本单价(元)"></el-table-column>
+              <el-table-column prop="subtotal" label="小记(元)"></el-table-column>
+            </el-table>
+          </div>
+
+          <el-row>
+            <br>
+            <br>
+            <el-col :span="12"><div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">总件数  :  {{scFrom2.amountSum}}</strong>
+            </div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">总金额  :  {{scFrom2.costPriceSum}}</strong>
+            </div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">登记人  :  {{scFrom2.register}}</strong>
+            </div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">审核人  :  {{scFrom2.checker}}</strong>
+            </div></el-col>
+            <el-col :span="12">
+              <div class="grid-content bg-purple-light">
+                <strong>登  记  时  间: </strong>
+                {{scFrom2.registerTime}}
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="grid-content bg-purple-light">
+                <strong>审 核  时  间: </strong>
+                {{scFrom2.registerTime}}
+              </div>
+            </el-col>
+          </el-row>
           <br>
           <br>
-          <el-col :span="12"><div class="grid-content bg-purple">
-            <strong >登记人:</strong>
-            <input class="xhx" type="text"  style="width:200px" v-model="register"></input>
-          </div></el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple-light">
-              <strong>登  记  时  间: </strong>
-              {{scFrom1.registerTime}}
+          <div style="margin-right:40px">
+            <el-form-item label="备注">
+              <el-input type="textarea" v-model="scFrom1.remaek"></el-input>
+            </el-form-item>
           </div>
-          </el-col>
-        </el-row>
-        <br>
-        <br>
-        <div style="margin-right:40px">
-          <el-form-item label="设计要求">
-            <el-input type="textarea" v-model="config"></el-input>
-          </el-form-item>
-        </div>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="zdwinshow = false">取 消</el-button>
-        <el-button type="primary" @click.prevent="tianjia">确 定</el-button>
-      </div>
-    </el-dialog>
+        </el-form>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -195,6 +178,7 @@
         maxAmount: "",
         register: "",
         tableData: [],
+        tableData1: [],
         options:[],
         zdwinshow: false,
         pageno: 1,
@@ -202,6 +186,7 @@
         total: 0,
         scFrom:[],
         scFrom1:{},
+        scFrom2:{},
         name: "",
         remark: "",
         value: "",
@@ -218,15 +203,13 @@
         var params = new URLSearchParams();
         params.append("pageno", this.pageno);
         params.append("pagesize", this.pagesize);
-
         params.append("productId", this.name);
         params.append("remark", this.remark);
 
 
-        axios.post("/sCell/selectall.action", params).then(function (response) {
-          _this.tableData = response.data.data;
-          console.log(_this.tableData = response.data.data)
-          _this.total = response.data.total;
+        axios.post("/sGather/queryqll.action", params).then(function (response) {
+          _this.tableData = response.data
+          console.log()
         }).catch();
       },
       handleSizeChange(val) {  //页size变更
@@ -238,6 +221,9 @@
 
         this.pageno = val;
         this.getdata();
+      },
+      cancelDialog(){
+
       },
       searchcartype() {   //条件查询
 
@@ -254,23 +240,9 @@
         // }).catch();
 
 
-      },btnsave(){
-        this.editwinshow = false;
-
       },
-      tianjia(){
+      btnsave(){
         this.zdwinshow = false;
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("id",_this.scFrom1.id)
-        params.append("minAmount",_this.minAmount)
-        params.append("maxAmount",_this.maxAmount)
-        params.append("register",_this.register)
-        params.append("maxCapacityAmount",_this.maxCapacity)
-        params.append("config",_this.config)
-        axios.post("/sCell/addSCell.action",params).then(function (response) {
-            console.log(response)
-        }).catch();
       },
       zhidin(id){
       this.zdwinshow = true;

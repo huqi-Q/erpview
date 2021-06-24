@@ -2,7 +2,7 @@
   <div id="app" class="homeWrap">
     <el-container style="height: 100%;">
       <el-header style="height: 80px; position: fixed; z-index: 1; width: 100%">ERP管理系统</el-header>
-        <!--      <el-header height="60px" id="admintp">admin</el-header>-->
+<!--      <el-header height="60px" id="admintp">admin</el-header>-->
 
       <el-container style="padding-top: 80px; height: 100%;">
         <el-aside style="width: 240px;">
@@ -62,19 +62,24 @@ import SafetyStockConfigurationQuery from "./components/view/scell/SafetyStockCo
 import recheckDFile from "./components/view/dfile/recheckDFile";
 import delDFile from "./components/view/dfile/delDFile";
 import delRecover from "./components/view/dfile/delRecover";
-import delDFileForever from "./components/view/dfile/delDFileForever";
-
 import GxdList from "./components/view/gxwl/GxdList";
 import GxdShList from "./components/view/gxwl/GxdShList";
 import GxdBgList from "./components/view/gxwl/GxdBgList";
 import GxdCxList from "./components/view/gxwl/GxdCxList";
 import ProcessRegister from "./components/view/processPlan/ProcessRegister";
+import SgatherAudit from "./components/view/sgather/SgatherAudit";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
+import PlanReview from "./components/view/processPlan/PlanReview";
+import PlanList from "./components/view/processPlan/PlanList";
+import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
+import DispatchList from "./components/view/dispatch/DispatchList";
+import DispatchReview from "./components/view/dispatch/DispatchReview";
 import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
 import SgatherQuery from "./components/view/sgather/SgatherQuery";
 import Dynamicinventoryquery from "./components/view/Dynamicinventory/Dynamicinventoryquery";
 import Zdmodule from "./components/view/module/Zdmodule";
+
 
 
 
@@ -142,6 +147,10 @@ export default {
     this.getmenudata();
   },
   components:{
+    Makestockinorder,Sgather,SgatherAudit,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+    ,ProcessList,Welcome,ProcessChange,GxdList,GxdShList,GxdBgList,GxdCxList,Outboundapplicationregistration,SgatherQuery,Dynamicinventoryquery
+    ,ProcessRegister,Makedeliveryorder
+    ,
     Sgather,ProcessChange,ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
   }
 }
