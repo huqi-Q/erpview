@@ -57,7 +57,7 @@
     </el-pagination>
 
     <!--  设计单-->
-    <el-dialog width="80%" title="工序物料设计单" :visible="zdwinshow">
+    <el-dialog width="80%" title="工序物料设计单" :before-close="handleClose" :visible="zdwinshow">
 
       <el-form  :modal="scFrom">
         <el-row>
@@ -118,9 +118,13 @@
               label="物料成本小计">
             </el-table-column>
             <el-table-column
+              prop="register"
+              label="登记人" v-if="false">
+            </el-table-column>
+            <el-table-column
               label="审核">
               <template slot-scope="scope">
-                <a href="#" @click.prevent='wf1(scFrom.productId)'>审核</a>
+                <a href="#" @click.prevent='wf1(scope.row)'>审核</a>
               </template>
             </el-table-column>
           </el-table>
@@ -146,14 +150,35 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="zdwinshow = false">取 消</el-button>
-        <el-button type="primary" @click="scgx">确 定</el-button>
+        <el-button @click="tjgx">不通过</el-button>
+        <el-button type="primary" @click="scgx">通 过</el-button>
       </div>
     </el-dialog>
 
-    <!--工序表格-->
-    <el-dialog width="80%" :title="'制造产品('+scFrom.productName+')供选择的物料如下：'" :visible="gxwinshow">
-      <!--生产工序-->
+    <!--工序物料设计-->
+    <el-dialog width="80%" :title="''+this.vcs+'工序物料设计'" :before-close="biubiu" :visible="gxwinshow">
+      <el-form  :modal="scFrom">
+        <el-row>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <strong style="margin-right: 220px">设  计  单  编  号  :  {{scFrom.designId}}</strong>
+              <br>
+              <br>
+              <strong style="margin-right: 220px">登      记      人  :  {{this.djr}}</strong>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple-light">
+              <strong style="margin-right: 220px">工   序   名    称  :  {{this.vcs}}</strong>
+              <br>
+              <br>
+              <strong style="margin-right: 220px">登     记     时      间 :  {{this.currentTime}}</strong>
+            </div>
+          </el-col>
+        </el-row>
+        <br>
+
+      <!--生产工序物料明细-->
       <div>
         <el-table
           :data="manufactureData"
@@ -177,14 +202,6 @@
             label="描述">
           </el-table-column>
           <el-table-column
-            prop="amount"
-            label="设计数量">
-          </el-table-column>
-          <el-table-column
-            prop="residualAmount"
-            label="可用数量">
-          </el-table-column>
-          <el-table-column
             prop="amountUnit"
             label="单位">
           </el-table-column>
@@ -193,23 +210,20 @@
             label="单价">
           </el-table-column>
           <el-table-column
-            prop="describe1"
+            prop="amount"
             label="本工序数量">
           </el-table-column>
           <el-table-column
-            label="操作">
-            <!--<template slot-scope="scope">
-              <a href="#" @click.prevent='tjgx(scope.row)'>添加</a>
-            </template>-->
-            <template slot-scope="scope">
-              <input class="mbk" type="text"></input>
-            </template>
+            prop="subtotal"
+            label="小计">
           </el-table-column>
         </el-table>
       </div>
 
+      </el-form>
+
       <div>
-        <el-button @click="gxwinshow = false">取消</el-button>
+        <el-button @click="gxwinshow = false">返回</el-button>
       </div>
     </el-dialog>
 
@@ -230,6 +244,9 @@
         manufactureData:[],
         options:[],
         value:"",
+        vcs:"",
+        pid:"",
+        djr:"",
         pageno: 1,
         pagesize: 5,
         total: 0,
@@ -272,7 +289,7 @@
         //产品档案
         this.$axios.post("/mDesignProcedure/loadWlysjMDesignProcedure.action", params).then(function (response) {
           _this.tableData = response.data.data;
-          _this.total = response.data.total;
+          _this.total = response.data.count;
           // _this.firstKindName = response.data.records[0].firstKindName;
           // _this.firstKindId = response.data.records[0].firstKindId;
         }).catch();
@@ -292,12 +309,18 @@
           return ''
         }
       },
-      wf1(id){
+      handleClose(done) { this.$confirm('确认关闭？') .then(_ => { this.zdwinshow=false; }) .catch(_ => {}); },
+      biubiu(done) { this.$confirm('确认关闭？') .then(_ => { this.gxwinshow=false; }) .catch(_ => {}); },
+
+      wf1(row){
         var _this = this;
         this.gxwinshow = true;
+        this.vcs=row.procedureName;
+        this.pid=row.id;
+        this.djr=row.register;
         var params = new URLSearchParams();
-        params.append("id",id);
-        this.$axios.post("/mDesignProcedure/loadAllDModuleDetailsById.action",params).then(function (response) {
+        params.append("id",_this.pid);
+        this.$axios.post("/mDesignProcedure/loadGXwlMDesignProcedureModuleById.action",params).then(function (response) {
           _this.manufactureData = response.data;
         }).catch();
       },
@@ -332,11 +355,32 @@
           _this.scgxtableData=response.data;
         }).catch();
       },
-      tjgx(row){
+      tjgx(){
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("id",this.scFrom.id);
+        this.$axios.post("/mDesignProcedure/updateGXwlMDesignProcedureById1.action",params).then(function (response) {
+          _this.$message({
+            type: 'success',
+            message: _this.scFrom.productName+'工序物料设计审核不通过，请重新设计!'
+          });
+          _this.zdwinshow=false;
+          _this.getdata();
+        }).catch();
 
       },
       scgx(){
-
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("id",this.scFrom.id);
+        this.$axios.post("/mDesignProcedure/updateGXwlMDesignProcedureById.action",params).then(function (response) {
+          _this.$message({
+            type: 'success',
+            message: _this.scFrom.productName+'工序物料设计审核通过!'
+          });
+          _this.zdwinshow=false;
+          _this.getdata();
+        }).catch();
       }
     },
     created() {
