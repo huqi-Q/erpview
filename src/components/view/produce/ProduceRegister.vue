@@ -7,12 +7,6 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="id"
-        label="编号"
-        v-if="false"
-        width="180">
-      </el-table-column>
-      <el-table-column
         prop="manufactureId"
         label="生产派工单编号"
         width="180">
@@ -53,8 +47,7 @@
     </el-pagination>
 
     <el-dialog width="80%" title="生产派工单" :visible="gxwinshow">
-      <el-button style="margin-left:1100px" @click="qx1">确定</el-button>
-      <el-button  @click="qx1">返回</el-button>
+      <el-button style="margin-left:1200px" @click="qx1">返回</el-button>
       <el-card style="width:1200px;margin-left:150px" class="box-card">
         <div>
           <el-main>
@@ -192,136 +185,136 @@
 </template>
 
 <script>
-  export default {
-    name: "DispatchReview",
-    data() {
-      return {
-        tableData: [],
-        wlData:[],
-        productFrom:{},
-        scgxtableData:[],
-        options:[],
-        value:"",
-        pageno: 1,
-        pagesize: 5,
-        total: 0,
-        firstKindId:"",
-        firstKindName:"",
-        name:"",
-        scFrom:{},
-        productName: "",
-        gxwinshow:false,
-        remark: "",
-        shortcuts: [{
-          text: '最近一周',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            return [start, end]
-          })(),
-        }, {
-          text: '最近一个月',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            return [start, end]
-          })(),
-        }, {
-          text: '最近三个月',
-          value: (() => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            return [start, end]
-          })(),
-        }],
-        registerTime: '',
+    export default {
+        name: "ProduceRegister",
+      data() {
+        return {
+          tableData: [],
+          wlData:[],
+          productFrom:{},
+          scgxtableData:[],
+          options:[],
+          value:"",
+          pageno: 1,
+          pagesize: 5,
+          total: 0,
+          firstKindId:"",
+          firstKindName:"",
+          name:"",
+          scFrom:{},
+          productName: "",
+          gxwinshow:false,
+          remark: "",
+          shortcuts: [{
+            text: '最近一周',
+            value: (() => {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              return [start, end]
+            })(),
+          }, {
+            text: '最近一个月',
+            value: (() => {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              return [start, end]
+            })(),
+          }, {
+            text: '最近三个月',
+            value: (() => {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              return [start, end]
+            })(),
+          }],
+          registerTime: '',
+        }
+      },
+      methods: {
+        getdata() {   //获取数据
+          var _this = this;
+          this.$axios.post("/mManufacture/selectByzt1").then(function (response) {
+            _this.tableData = response.data;
+            // _this.total = response.data.total;
+          }).catch();
+        },
+        handleSizeChange(val) {  //页size变更
+          this.pagesize = val;
+          this.pageno = 1;
+          this.getdata();
+        },
+        handleCurrentChange(val){  //页码变更
+          this.pageno = val;
+          this.getdata();
+        },
+        searchproduct() {   //条件查询
+          this.getdata();
+        },
+        resetproduct(name) {
+          this.$refs[name].resetFields()
+          this.dialogVisible = false;
+        },
+        qx(){
+          this.zdwinshow=false;
+        },qx1(){
+          this.gxwinshow=false;
+        },
+        tjgx(row){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id", row.id);
+          this.tname=row.procedureName;
+
+          this.$axios.post("/mDesignProcedureModule/selectByPid", params).then(function (response) {
+            _this.wlData = response.data;
+            // _this.total = response.data.total;
+          }).catch();
+
+          var params1 = new URLSearchParams();
+          params1.append("id",  row.parentId);
+          this.$axios.post("/mDesignProcedure/selectById", params1).then(function (response) {
+            _this.sjId=response.data.designId;
+            // _this.total = response.data.total;
+          }).catch();
+
+          this.gxwinshow=true;
+      },
+        shsjd(row){
+
+          this.scFrom.productName=row.productName;
+          this.scFrom.productId=row.productId;
+          this.scFrom.amount=row.amount;
+          this.scFrom.manufactureId=row.manufactureId;
+
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("productId", row.productId);
+
+          this.$axios.post("/mDesignProcedure/queryById", params).then(function (response) {
+
+            _this.scgxtableData=response.data;
+            if(_this.scgxtableData.length>0){
+              _this.zdwinshow=true;
+            }else {
+              _this.$confirm('对不起，该产品的工序设计或工序物料设计尚未完成，不能制定生产派工单', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {}).catch(() => {});
+            }
+
+          }).catch();
+          this.gxwinshow=true;
+
+        },
+      },
+      created() {
+        this.getdata();
       }
-    },
-    methods: {
-      getdata() {   //获取数据
-        var _this = this;
-        this.$axios.post("/mManufacture/selectByzt1").then(function (response) {
-          _this.tableData = response.data;
-          // _this.total = response.data.total;
-        }).catch();
-      },
-      handleSizeChange(val) {  //页size变更
-        this.pagesize = val;
-        this.pageno = 1;
-        this.getdata();
-      },
-      handleCurrentChange(val){  //页码变更
-        this.pageno = val;
-        this.getdata();
-      },
-      searchproduct() {   //条件查询
-        this.getdata();
-      },
-      resetproduct(name) {
-        this.$refs[name].resetFields()
-        this.dialogVisible = false;
-      },
-      qx(){
-        this.zdwinshow=false;
-      },qx1(){
-        this.gxwinshow=false;
-      },
-      tjgx(row){
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("id", row.id);
-        this.tname=row.procedureName;
-
-        this.$axios.post("/mDesignProcedureModule/selectByPid", params).then(function (response) {
-          _this.wlData = response.data;
-          // _this.total = response.data.total;
-        }).catch();
-
-        var params1 = new URLSearchParams();
-        params1.append("id",  row.parentId);
-        this.$axios.post("/mDesignProcedure/selectById", params1).then(function (response) {
-          _this.sjId=response.data.designId;
-          // _this.total = response.data.total;
-        }).catch();
-
-        this.gxwinshow=true;
-      },
-      shsjd(row){
-
-        this.scFrom.productName=row.productName;
-        this.scFrom.productId=row.productId;
-        this.scFrom.amount=row.amount;
-        this.scFrom.manufactureId=row.manufactureId;
-
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("productId", row.productId);
-
-        this.$axios.post("/mDesignProcedure/queryById", params).then(function (response) {
-
-          _this.scgxtableData=response.data;
-          if(_this.scgxtableData.length>0){
-            _this.zdwinshow=true;
-          }else {
-            _this.$confirm('对不起，该产品的工序设计或工序物料设计尚未完成，不能制定生产派工单', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {}).catch(() => {});
-          }
-
-        }).catch();
-        this.gxwinshow=true;
-
-      },
-    },
-    created() {
-      this.getdata();
     }
-  }
 </script>
 
 <style scoped>

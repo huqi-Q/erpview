@@ -337,7 +337,7 @@
     height: 25px;
     border: none;
     border-bottom: 1px solid black;
-    background-color: transparent;
+    background-color: tran  sparent;
     outline: none;
   }
   .mbk{

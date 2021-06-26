@@ -53,9 +53,7 @@ import Welcome from "./components/view/Welcome";
 import ProcessChange from "./components/view/process/ProcessChange";
 import Sgather from "./components/view/sgather/Sgather";
 import scell from "./components/view/scell/scell";
-/*
 import QueryallDFile from "./components/view/dfile/queryallDFile";
-*/
 import updateDFile from "./components/view/dfile/updateDFile";
 import addDFile from "./components/view/dfile/addDFile";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
@@ -75,7 +73,8 @@ import SgatherAudit from "./components/view/sgather/SgatherAudit";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
 import PlanReview from "./components/view/processPlan/PlanReview";
-//import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
+import PlanList from "./components/view/processPlan/PlanList";
+import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
 import DispatchList from "./components/view/dispatch/DispatchList";
 import DispatchReview from "./components/view/dispatch/DispatchReview";
 import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
@@ -89,15 +88,14 @@ import Warehousingquery from "./components/view/Warehousingmanagement/Warehousin
 import Outboundregistration from "./components/view/Outboundmanagement/Outboundregistration";
 import Deliveryaudit from "./components/view/Outboundmanagement/Deliveryaudit";
 import Deliveryquery from "./components/view/Outboundmanagement/Deliveryquery";
-
-
-
-
+import ProduceRegister from "./components/view/produce/ProduceRegister";
+import ProduceList from "./components/view/produce/ProduceList";
+import ProduceReview from "./components/view/produce/ProduceReview";
 export default {
   name: 'app',
-  data(){
+  data() {
     return {
-      menutable:[],
+      menutable: [],
       editableTabsValue: '1',  // 设置选中的
       editableTabs: [{   //tab选项卡显示的数据内容
         title: '首页',
@@ -108,21 +106,23 @@ export default {
     };
   },
   methods: {
-    getmenudata(){
-      this.$axios.get("/sysMenus/queryallmenus.action").then((response)=>{
+    getmenudata() {
+      this.$axios.get("/sysMenus/queryallmenus.action").then((response) => {
         console.log(response.data);
-        this.menutable=response.data;
+        this.menutable = response.data;
       }).catch();
     },
-    addTab(titlename,linkurl) {
+    addTab(titlename, linkurl) {
 
       //判断当前页面是否存在
-      var tempobj = this.editableTabs.find((item)=>{return item.title==titlename});
+      var tempobj = this.editableTabs.find((item) => {
+        return item.title == titlename
+      });
 
       //存在  active
-      if(tempobj!=undefined){
-        this.editableTabsValue =tempobj.name ;
-      }else {
+      if (tempobj != undefined) {
+        this.editableTabsValue = tempobj.name;
+      } else {
         //不存在 添加
         let newTabName = ++this.tabIndex + '';
         this.editableTabs.push({
@@ -153,16 +153,30 @@ export default {
     }
 
   },
-  created(){
+  created() {
     this.getmenudata();
   },
-  components:{
-    Makestockinorder,Sgather,SgatherAudit,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery,
-    ProcessList,Welcome,ProcessChange,GxdList,GxdShList,GxdBgList,GxdCxList,Outboundapplicationregistration,SgatherQuery,Dynamicinventoryquery,ProcessRegister,Makedeliveryorder,PlanReview,DispatchList,DispatchReview,Zdmodule,updateDFile
-    ,addDFile,recheckDFile,delDFile,delRecover
-   ,Warehousingregistration,Warehousingaudit,Warehousingquery,Outboundregistration,Deliveryaudit,Deliveryquery,
-    Zdmodulechange,Zdmoduletoexamine,QueryallDFile,
+  components: {
+    updateDFile, addDFile, recheckDFile, delDFile,
+    delRecover, Zdmodule,
+    Dynamicinventoryquery,
+    SgatherQuery, Outboundapplicationregistration,
+    GxdList, GxdShList
+    , GxdBgList, GxdCxList, ProcessFormulate,
+    ProcessReview, scell, SafetyStockAudit,
+    SafetyStockConfigurationChange,
+    SafetyStockConfigurationQuery,
+    ProcessList, Welcome,
+    ProcessChange, Sgather
+    , ProcessRegister,
+    Makestockinorder, Makedeliveryorder
+    , PlanReview, PlanList, DevelopDispatch, DispatchList, DispatchReview, ProduceRegister
+    , ProduceList, ProduceReview
+    , SgatherAudit
+    , Warehousingregistration, Warehousingaudit, Warehousingquery, Outboundregistration, Deliveryaudit, Deliveryquery,
+    Zdmodulechange, Zdmoduletoexamine, QueryallDFile,
 
+  }
 }
 </script>
 
