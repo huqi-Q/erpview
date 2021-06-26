@@ -43,8 +43,7 @@
       </div></el-col>
 
       <el-col :span="12"><div>
-        <strong>登记人:</strong>
-        <input class="xhx" style="width:200px" v-model="register"></input>
+        <strong style="margin-right: 300px">登记人:<input class="xhx" style="width:200px" v-model="register"></input></strong>
       </div></el-col>
 
       <el-col :span="12"><div>
@@ -52,9 +51,10 @@
       </div></el-col>
 
       <el-col :span="12"><div>
-        <strong>登  记  时  间: <input class="mbk" v-model="currentTime" style="width:300px"></input></strong>
+        <strong style="margin-right: 180px">登  记  时  间: <input class="mbk" v-model="currentTime" style="width:300px"></input></strong>
       </div></el-col>
     </el-row>
+
 
     <br>
     <div style="margin-right:40px">

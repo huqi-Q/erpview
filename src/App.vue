@@ -53,7 +53,9 @@ import Welcome from "./components/view/Welcome";
 import ProcessChange from "./components/view/process/ProcessChange";
 import Sgather from "./components/view/sgather/Sgather";
 import scell from "./components/view/scell/scell";
+/*
 import QueryallDFile from "./components/view/dfile/queryallDFile";
+*/
 import updateDFile from "./components/view/dfile/updateDFile";
 import addDFile from "./components/view/dfile/addDFile";
 import SafetyStockAudit from "./components/view/scell/SafetyStockAudit";
@@ -73,8 +75,7 @@ import SgatherAudit from "./components/view/sgather/SgatherAudit";
 import Makestockinorder from "./components/view/Dispatchingmanagement/Makestockinorder";
 import Makedeliveryorder from "./components/view/Dispatchingmanagement/Makedeliveryorder";
 import PlanReview from "./components/view/processPlan/PlanReview";
-import PlanList from "./components/view/processPlan/PlanList";
-import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
+//import DevelopDispatch from "./components/view/dispatch/DevelopDispatch";
 import DispatchList from "./components/view/dispatch/DispatchList";
 import DispatchReview from "./components/view/dispatch/DispatchReview";
 import Outboundapplicationregistration from "./components/view/Issueapplicationmanagement/Outboundapplicationregistration";
@@ -156,10 +157,12 @@ export default {
     this.getmenudata();
   },
   components:{
-    Sgather,SgatherAudit,Warehousingregistration,Warehousingaudit,Warehousingquery,Outboundregistration,Deliveryaudit,Deliveryquery,
-    Zdmodulechange,Zdmoduletoexamine,updateDFile,QueryallDFile,delDFile,delRecover,recheckDFile,addDFile,
-    Zdmodule,ProcessChange,ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
-  }
+    Makestockinorder,Sgather,SgatherAudit,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery,
+    ProcessList,Welcome,ProcessChange,GxdList,GxdShList,GxdBgList,GxdCxList,Outboundapplicationregistration,SgatherQuery,Dynamicinventoryquery,ProcessRegister,Makedeliveryorder,PlanReview,DispatchList,DispatchReview,Zdmodule,updateDFile
+    ,addDFile,recheckDFile,delDFile,delRecover
+   ,Warehousingregistration,Warehousingaudit,Warehousingquery,Outboundregistration,Deliveryaudit,Deliveryquery,
+    Zdmodulechange,Zdmoduletoexamine,QueryallDFile,
+
 }
 </script>
 
