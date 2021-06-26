@@ -209,7 +209,6 @@
 
         axios.post("/sGather/queryqll.action", params).then(function (response) {
           _this.tableData = response.data
-          console.log()
         }).catch();
       },
       handleSizeChange(val) {  //页size变更

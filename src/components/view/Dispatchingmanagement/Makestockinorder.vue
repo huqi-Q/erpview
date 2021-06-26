@@ -320,7 +320,7 @@
           _this.getdata();
         }).catch();
 
-        _this.CapacityAmount = '';
+        // _this.CapacityAmount = '';
       },
       zhidin(row){
         this.zdwinshow = true;

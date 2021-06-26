@@ -162,7 +162,6 @@
         params.append("pagesize", this.pagesize);
         params.append("name", this.name);
         params.append("remaek", this.remaek);
-        console.log(params)
       },
       add() {//添加产品
         var _this = this;
@@ -179,7 +178,6 @@
         var empNumber = []
         arr.map((item, index) => {
           empNumber.push()
-          console.log(item.productName)
           if ( item.productName.length>2){
             alert("不能添加重复的")
             return false;
@@ -189,7 +187,6 @@
 
       },
       del(index) {//删除
-        console.log(index)
         this.nulltable.splice(index, 1);
       },
       commit() { //提交
@@ -220,7 +217,6 @@
             })
           )
         })
-console.log(JSON.stringify(newArr)+'scsc')
         this.$confirm('确定提交吗!!!', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

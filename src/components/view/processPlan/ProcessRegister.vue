@@ -17,14 +17,10 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <strong>供  货  时  间 : <el-date-picker
-                  v-model="value"
-                  type="date"
-                  placeholder="选择日期">
-                </el-date-picker></strong>
+                <strong>供  货  时  间 :</strong>
                 <br>
                 <br>
-                <strong>登  记  时  间: <input class="mbk" v-model="currentTime" style="width:300px"></input></strong>
+                <strong>登  记  时  间: </strong>
               </div>
 
 
@@ -280,7 +276,6 @@
           var newArr = [];
 
           arr.forEach(function(item, index){
-            console.log(item);
             var dx = {};
             dx.productId=item.productId
             dx.productName=item.productName

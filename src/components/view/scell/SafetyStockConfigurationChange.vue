@@ -279,7 +279,6 @@
         this.zdwinshow = true;
         var _this = this;
         var params = new URLSearchParams();
-        console.log(row)
         params.append("id",row.id);
         _this.pid=row.productId;
         axios.post("/sCell/selectSCellbyids.action",params).then(function (response) {

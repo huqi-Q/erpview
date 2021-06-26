@@ -230,7 +230,6 @@
 
         axios.post("/sCell/selectall.action", params).then(function (response) {
           _this.tableData = response.data.data;
-          console.log(_this.tableData = response.data.data)
           _this.total = response.data.total;
         }).catch();
       },
@@ -274,7 +273,6 @@
         params.append("maxCapacityAmount",_this.maxCapacity)
         params.append("config",_this.config)
         axios.post("/sCell/addSCell.action",params).then(function (response) {
-            console.log(response)
         }).catch();
       },
       zhidin(id){

@@ -286,7 +286,6 @@
         var params = new URLSearchParams();
         params.append("productId",_this.scFrom1.productId);
         params.append("Reasonsforrejection",this.textarea);
-        console.log(this.tableData)
         axios.post("/sCell/Reasonsforrejection.action",params).then(function (response) {
           if (response.data== true) {
             _this.bohueidiv=false

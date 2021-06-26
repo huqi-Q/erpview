@@ -214,7 +214,6 @@
 
         axios.post("/sCell/queryallcartype.action", params).then(function (response) {
           _this.tableData = response.data.data;
-          console.log(    _this.tableData = response.data.data)
           _this.total = response.data.total;
         }).catch();
       },

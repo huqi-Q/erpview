@@ -180,7 +180,6 @@
           params.append("pagesize", this.pagesize);
           params.append("name", this.name);
           params.append("remaek", this.remaek);
-          console.log(params)
 
           axios.post("/sGather/querycheckTag.action", params).then(function (response) {
             _this.tableData = response.data.data;
@@ -206,11 +205,9 @@
           params.append("id",id);
           axios.post("/sGather/queryparentId.action",params).then(function (response) {
             _this.scFrom2=response.data[0];
-            console.log(response.data[0])
           }).catch();
           this.$axios.post("/sGather/queryparentIdtable.action",params).then(function (response) {
             _this.tableData1 = response.data;
-            console.log(response.data)
           }).catch()
         },
         tianjia(){

@@ -1,6 +1,6 @@
 <template>
     <div>
-      欢迎使用本系统
+      欢迎 <h1>admin</h1> 使用本系统
     </div>
 </template>
 
@@ -10,6 +10,6 @@
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>
