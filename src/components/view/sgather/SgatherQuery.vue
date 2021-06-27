@@ -57,7 +57,7 @@
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="gatherId" label="申请单编号" width="180">
         <template  slot-scope="scope">
-          <a @click="cancelDialog(scope.row.id)" style="color:blue;cursor:pointer">{{scope.row.gatherId}}</a>
+          <a @click="cancelDialog(scope.row)" style="color:blue;cursor:pointer">{{scope.row.gatherId}}</a>
         </template>
       </el-table-column>
       <el-table-column prop="reason" label="入库理由"></el-table-column>
@@ -82,8 +82,8 @@
       :total="total">
     </el-pagination>
 
-      <!--  设计单-->
-      <el-dialog width="80%" title="入库申请登记复核" :visible="shwinshow">
+    <!--  入库申请查询-->
+      <el-dialog width="80%" title="入库申请登记复核" :visible="zdwinshow">
 
         <el-form  :modal="scFrom1">
           <el-row>
@@ -130,25 +130,27 @@
             <br>
             <br>
             <el-col :span="12"><div class="grid-content bg-purple">
-              <strong style="margin-right: 240px">总件数  :  {{scFrom2.amountSum}}</strong>
+              <strong style="margin-right: 220px">总件数  :  {{scFrom2.amountSum}}</strong>
             </div></el-col>
             <el-col :span="12"><div class="grid-content bg-purple">
-              <strong style="margin-right: 240px">总金额  :  {{scFrom2.costPriceSum}}</strong>
+              <strong style="margin-right: 220px">总金额  :  {{scFrom2.costPriceSum}}</strong>
             </div></el-col>
             <el-col :span="12"><div class="grid-content bg-purple">
               <strong style="margin-right: 220px">登记人  :  {{scFrom2.register}}</strong>
             </div></el-col>
             <el-col :span="12"><div class="grid-content bg-purple">
-              <strong style="margin-right: 240px">审核人  :  {{scFrom2.checker}}</strong>
+              <strong style="margin-right: 220px">审核人  :  {{scFrom2.checker}}</strong>
             </div></el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <strong style="margin-right: 80px">登  记  时  间: {{scFrom2.registerTime}} </strong>
+                <strong>登  记  时  间: </strong>
+                {{scFrom2.registerTime}}
               </div>
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <strong style="margin-right: 100px">审 核  时  间: {{scFrom2.registerTime}}</strong>
+                <strong>审 核  时  间: </strong>
+                {{scFrom2.registerTime}}
               </div>
             </el-col>
           </el-row>
@@ -160,9 +162,6 @@
             </el-form-item>
           </div>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="shwinshow = false">返回</el-button>
-        </div>
       </el-dialog>
     </el-card>
   </div>
@@ -182,7 +181,6 @@
         tableData1: [],
         options:[],
         zdwinshow: false,
-        shwinshow:false,
         pageno: 1,
         pagesize: 5,
         total: 0,
@@ -223,19 +221,7 @@
         this.pageno = val;
         this.getdata();
       },
-      cancelDialog(id){
-        var _this = this;
-        _this.shwinshow = true;
-        var params = new URLSearchParams();
-        params.append("id",id);
-        axios.post("/sGather/queryparentId.action",params).then(function (response) {
-          _this.scFrom2=response.data[0];
-          console.log(response.data[0])
-        }).catch();
-        this.$axios.post("/sGather/queryparentIdtable.action",params).then(function (response) {
-          _this.tableData1 = response.data;
-          console.log(response.data)
-        }).catch()
+      cancelDialog(){
 
       },
       searchcartype() {   //条件查询

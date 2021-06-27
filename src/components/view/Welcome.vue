@@ -1,6 +1,8 @@
 <template>
     <div>
-      欢迎 <h1>admin</h1> 使用本系统
+      <a href="">产品设计</a><br>
+      <a href="">生产管理</a><br>
+      <a href="">库存管理</a><br>
     </div>
 </template>
 

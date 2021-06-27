@@ -2,7 +2,7 @@
 <div>
 <!--产品档案删除-->
   <!--  条件查询-->
-  <el-form ref="productFrom"  :inline="true">
+  <el-form ref="productFrom"  :inline="true" >
     <el-form-item label="请选择产品I级分类">
       <el-select v-model="value" placeholder="请选择">
         <el-option
