@@ -163,8 +163,8 @@
         this.$axios.post("/mDesignProcedure/queryallProcedureGx.action", params).then(function (response) {
           _this.tableData = response.data.records;
           _this.total = response.data.total;
-          _this.firstKindName = response.data.records[0].firstKindName;
-          _this.firstKindId = response.data.records[0].firstKindId;
+          // _this.firstKindName = response.data.records[0].firstKindName;
+          // _this.firstKindId = response.data.records[0].firstKindId;
         }).catch();
       },
       handleSizeChange(val) {  //页size变更

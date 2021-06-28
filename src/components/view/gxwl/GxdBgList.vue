@@ -429,8 +429,8 @@
         this.$axios.post("/mDesignProcedure/queryallProcedureGx1.action", params).then(function (response) {
           _this.tableData = response.data.records;
           _this.total = response.data.total;
-          _this.firstKindName = response.data.records[0].firstKindName;
-          _this.firstKindId = response.data.records[0].firstKindId;
+          // _this.firstKindName = response.data.records[0].firstKindName;
+          // _this.firstKindId = response.data.records[0].firstKindId;
         }).catch();
       },
       handleSizeChange(val) {  //页size变更
@@ -477,32 +477,40 @@
           )
         })
 
-        this.$confirm('确定设计工序:  '+this.vcs+' ?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-
-          this.$axios.post("/mDesignProcedure/addMDesignProcedureModule.action",JSON.stringify(newArr)
-            ,{headers:{"Content-Type":"application/json"}}
-          ).then(function (response) {
-            _this.zd(_this.id);
-          }).catch();
-          this.getdata();
-
+        if(this.sl==""){
           this.$message({
-            type: 'success',
-            message: '设计成功!'
-          });
-          this.gxwinshow = false;
-          this.sl="";
+            message: '工序数量不能为空！',
+            type: 'warning'
+          });}else {
+          this.$confirm('确定设计工序:  '+this.vcs+' ?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
 
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消设计'
+            this.$axios.post("/mDesignProcedure/addMDesignProcedureModule.action",JSON.stringify(newArr)
+              ,{headers:{"Content-Type":"application/json"}}
+            ).then(function (response) {
+              _this.zd(_this.id);
+            }).catch();
+            this.getdata();
+
+            this.$message({
+              type: 'success',
+              message: '设计成功!'
+            });
+            this.gxwinshow = false;
+            this.sl="";
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消设计'
+            });
           });
-        });
+        }
+
+
       },
       wf1(row){
         var _this = this;

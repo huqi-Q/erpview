@@ -464,32 +464,40 @@
           )
         })
 
-        this.$confirm('确定设计工序:  '+this.vcs+' ?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-
-          this.$axios.post("/mDesignProcedure/addMDesignProcedureModule.action",JSON.stringify(newArr)
-            ,{headers:{"Content-Type":"application/json"}}
-          ).then(function (response) {
-            _this.zd(_this.id);
-          }).catch();
-          this.getdata();
-
+        if(this.sl==""){
           this.$message({
-            type: 'success',
-            message: '设计成功!'
+            message: '工序数量不能为空！',
+            type: 'warning'
           });
-          this.gxwinshow = false;
-          this.sl="";
+        }else {
+          this.$confirm('确定设计工序:  '+this.vcs+' ?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
 
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消设计'
+            this.$axios.post("/mDesignProcedure/addMDesignProcedureModule.action",JSON.stringify(newArr)
+              ,{headers:{"Content-Type":"application/json"}}
+            ).then(function (response) {
+              _this.zd(_this.id);
+            }).catch();
+            this.getdata();
+
+            this.$message({
+              type: 'success',
+              message: '设计成功!'
+            });
+            this.gxwinshow = false;
+            this.sl="";
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消设计'
+            });
           });
-        });
+        }
+
       },
       wf1(row){
         var _this = this;
