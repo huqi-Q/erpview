@@ -91,7 +91,9 @@
   import Deliveryaudit from "./view/Outboundmanagement/Deliveryaudit";
   import Deliveryquery from "./view/Outboundmanagement/Deliveryquery";
   import wew from "./"
-
+  import ProduceRegister from "./view/produce/ProduceRegister";
+  import ProduceReview from "./view/produce/ProduceReview";
+  import ProduceList from "./view/produce/ProduceList";
 
   export default {
     name: 'index',
@@ -156,9 +158,18 @@
       this.getmenudata();
     },
     components:{
-      Sgather,SgatherAudit,Warehousingregistration,Warehousingaudit,Warehousingquery,Outboundregistration,Deliveryaudit,Deliveryquery,
-      Zdmodulechange,Zdmoduletoexamine,updateDFile,QueryallDFile,delDFile,delRecover,recheckDFile,addDFile,xianqin,
-      Zdmodule,ProcessChange,ProcessRegister,GxdCxList,GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,SafetyStockConfigurationChange,SafetyStockConfigurationQuery
+      Sgather,SgatherAudit,Warehousingregistration,
+      Warehousingaudit,Warehousingquery,Outboundregistration
+      ,Deliveryaudit,Deliveryquery,
+      Zdmodulechange,Zdmoduletoexamine,updateDFile,
+      QueryallDFile,delDFile,delRecover,recheckDFile,
+      addDFile,xianqin,
+      Zdmodule,ProcessChange,ProcessRegister,GxdCxList,
+      GxdBgList,GxdShList,GxdList,Dynamicinventoryquery,SgatherQuery,
+      Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,
+      ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,
+      SafetyStockConfigurationChange,SafetyStockConfigurationQuery,PlanReview,PlanList
+      ,DevelopDispatch,DispatchList,DispatchReview,ProduceRegister,ProduceReview,ProduceList
     }
   }
 </script>
