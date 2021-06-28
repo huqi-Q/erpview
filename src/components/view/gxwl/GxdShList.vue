@@ -39,7 +39,7 @@
         label="工时总成本">
       </el-table-column>
       <el-table-column
-        label="制定设计单">
+        label="审核">
         <template slot-scope="scope">
           <a href="#" @click.prevent='zd(scope.row.id)'>审核</a>
         </template>
