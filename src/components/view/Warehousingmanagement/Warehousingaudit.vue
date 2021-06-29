@@ -70,16 +70,12 @@
       </el-table-column>
       <el-table-column
         prop="costPriceSum"
-        label="总件数">
-      </el-table-column>
-      <el-table-column
-        prop="costPriceSum"
         label="总金额">
       </el-table-column>
       <el-table-column
-        label="复核">
+        label="审核">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='shsjd(scope.row)'>复核</a>
+          <a href="#" @click.prevent='shsjd(scope.row)'>审核</a>
         </template>
       </el-table-column>
     </el-table>
@@ -95,7 +91,7 @@
     </el-pagination>
 
 
-    <el-dialog width="80%" title="入库单复核" :visible="jhwinshow">
+    <el-dialog width="80%" title="入库单" :visible="jhwinshow">
 
       <el-form  :modal="scFrom">
         <el-row>
@@ -119,12 +115,15 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
             <el-table-column prop="productName" label="产品名称"></el-table-column>
-            <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
+            <el-table-column prop="warehouseName" label="库房名称">d</el-table-column>
             <el-table-column prop="thirdKindName" label="存放地址"></el-table-column>
-            <el-table-column prop="productName" label="应入库数量"></el-table-column>
-            <el-table-column prop="productName" label="已库数量"></el-table-column>
-            <el-table-column prop="productName" label="本次库数量">
-              <input type="text">
+            <el-table-column prop="amount" label="应入库数量"></el-table-column>
+            <el-table-column prop="gatheredAmount" label="已库数量"></el-table-column>
+            <el-table-column prop="bengcisun"  label="本次库数量">
+              <template slot-scope="scope">
+                <el-input type="number"  placeholder="请输入内容" v-model="bengcisun" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+              </template>
+              <!--<input type="text" v-model="bengcisun">-->
             </el-table-column>
           </el-table>
         </div>
@@ -155,9 +154,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="qx">取 消</el-button>
+        <el-button @click="qx">返回</el-button>
         <el-button type="primary" @click="tjsh">通过</el-button>
-        <el-button type="primary" >驳回</el-button>
       </div>
     </el-dialog>
 
@@ -166,13 +164,14 @@
 
 <script>
   export default {
-    name: "Warehousingaudit",
+    name: "Warehousingregistration",
     data() {
       return {
         tableData: [],
+        bengcisun: "",
+        scgxtabs:[],
         productFrom:{},
         options:[],
-        scgxtabs:[],
         scgxtableData:[],
         scgData:[],
         value:"",
@@ -220,7 +219,7 @@
     methods: {
       getdata() {   //获取数据
         var _this = this;
-        this.$axios.post("/sGather/queryscheduled.action").then(function (response) {
+        this.$axios.post("/sGather/queryscheduledshenhei.action").then(function (response) {
           _this.tableData = response.data;
         }).catch();
       },
@@ -265,18 +264,19 @@
       tjsh(){
         var _this = this;
         var params = new URLSearchParams();
-        params.append("id", _this.scgData.id);
-        this.$axios.post("/sGather/Auditofwarehousingaccount.action",params).then(function (response) {
+        params.append("gatherId", this.scgxtabs.gatherId);
+        params.append("productId", this.scgxtabs.productId);
+        this.$axios.post("/sGather/shenheirukudenji.action",params).then(function (response) {
           if(response.data==true){
             _this.$message.success({
-              message: '恭喜你,审核成功',
+              message: '恭喜你,复核成功',
               type: 'success'
             });
             _this.jhwinshow=false;
             _this.getdata();
           }else {
             _this.$message({
-              message: '审核失败',
+              message: '复核失败',
               type: 'warning'
             });
           }

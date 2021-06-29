@@ -72,9 +72,9 @@
       <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
-        label="变更">
+        label="制定">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='zhidin(scope.row)'>变更</a>
+          <a href="#" @click.prevent='zhidin(scope.row)'>制定</a>
         </template>
       </el-table-column>
     </el-table>
@@ -300,6 +300,20 @@
       },
       tianjia(){
         var _this = this;
+        if (_this.CapacityAmount === ''){
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
+          return false
+        }
+        if (_this.CapacityAmount>_this.scFrom[0].maxCapacityAmount) {
+          _this.$message({
+            message: '已经大于最大存储',
+            type: 'warning'
+          });
+          return false
+        }
         this.diaodumode = false;
         var params = new URLSearchParams();
         params.append("amount",_this.CapacityAmount);

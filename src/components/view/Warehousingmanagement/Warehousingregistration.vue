@@ -263,12 +263,28 @@
       },
       tjsh(){
         var _this = this;
+        if (_this.bengcisun === ''){
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
+          return false;
+        }
+        var sum=_this.bengcisun+_this.scgxtableData[0].gatheredAmount
+        if (sum>_this.scgxtabs.amount){
+          _this.$message({
+            message: '入库数量已经上限',
+            type: 'warning'
+          });
+          return false
+        }
         var params = new URLSearchParams();
         params.append("productId", this.scgxtabs.productId);
         params.append("id", this.scgxtabs.id);
+        params.append("gatherId", this.scgxtabs.gatherId);
         params.append("gatheredAmount",this.scgxtabs.gatheredAmount);
         params.append("amount",this.scgxtabs.amount);
-        params.append("gatheres",this.scgxtableData.bengcisun);
+        params.append("gatheres",this.bengcisun);
         this.$axios.post("/sGatherDetails/updategatheredamountbyid.action",params).then(function (response) {
           if(response.data==true){
             _this.$message.success({

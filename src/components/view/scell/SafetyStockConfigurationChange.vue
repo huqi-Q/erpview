@@ -248,33 +248,56 @@
 
       },
       tianjia(){
-        this.zdwinshow = false;
         var _this = this;
-        var params = new URLSearchParams();
-        params.append("productId",_this.pid);
-        params.append("id",_this.scFrom1.id)
-        params.append("minAmount",_this.scFrom1.minAmount)
-        params.append("maxAmount",_this.scFrom1.maxAmount)
-        params.append("register",_this.scFrom1.register)
-        params.append("maxCapacityAmount",_this.scFrom1.maxCapacity)
-        params.append("config",_this.scFrom1.config)
-        axios.post("/sCell/changeSCell.action",params).then(function (response) {
-          if (response.data == true) {
-            _this.$notify({
-              title: '成功',
-              message: '变更成功,但需要审核!',
-              type: 'success'
-            });
-            _this.zdwinshow = false;
-          } else {
-            _this.$notify({
-              title: '失败',
-              message: '服务端请求超时 请重试',
-              type: 'danger'
-            });}
-          _this.getdata();
-        }).catch();
-      },
+        if (_this.scFrom1.minAmount === '' || _this.scFrom1.maxAmount === '' || _this.scFrom1.maxCapacity === '' || _this.scFrom1.register === ''|| _this.scFrom1.config === ''){
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
+          return false;
+        }
+        if (_this.scFrom1.maxAmount.length < _this.scFrom1.minAmount.length) {
+          _this.$message({
+            message: '警报上限次数>警报下限次数',
+            type: 'warning'
+          });
+          return false;
+        }
+        if (_this.scFrom1.maxCapacity.length<_this.scFrom1.maxAmount.length || _this.scFrom1.maxCapacity.length<_this.scFrom1.minAmount.length){
+          _this.$message({
+            message: '警报上限次数或者警报下限次数不能小于最大存储',
+            type: 'warning'
+          });
+          return false;
+        } else {
+          this.zdwinshow = false;
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("productId", _this.pid);
+          params.append("id", _this.scFrom1.id)
+          params.append("minAmount", _this.scFrom1.minAmount)
+          params.append("maxAmount", _this.scFrom1.maxAmount)
+          params.append("register", _this.scFrom1.register)
+          params.append("maxCapacityAmount", _this.scFrom1.maxCapacity)
+          params.append("config", _this.scFrom1.config)
+          axios.post("/sCell/changeSCell.action", params).then(function (response) {
+            if (response.data == true) {
+              _this.$notify({
+                title: '成功',
+                message: '变更成功,但需要审核!',
+                type: 'success'
+              });
+              _this.zdwinshow = false;
+            } else {
+              _this.$notify({
+                title: '失败',
+                message: '服务端请求超时 请重试',
+                type: 'danger'
+              });
+            }
+            _this.getdata();
+          }).catch();
+        }},
       zhidin(row){
         this.zdwinshow = true;
         var _this = this;

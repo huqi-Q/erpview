@@ -106,7 +106,7 @@
               <br>
               <br>
               <strong >警报下限次数:</strong>
-              <input class="xhx" style="width:200px" value="dwef" v-model="minAmount"></input>
+              <input class="xhx" style="width:200px" oninput="value=value.replace(/[^0-9.]/g,'')"  v-model="minAmount"></input>
             </div>
           </el-col>
           <el-col :span="12">
@@ -117,7 +117,7 @@
           <div class="grid-content bg-purple">
             <br>
             <strong >警报上限次数:</strong>
-            <input class="xhx" style="width:200px" v-model="maxAmount"></input>
+            <input class="xhx" style="width:200px" v-model="maxAmount" oninput="value=value.replace(/[^0-9.]/g,'')"></input>
           </div>
           </el-col>
           <el-col :span="12">
@@ -136,9 +136,11 @@
             <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
             <el-table-column prop="thirdKindId" label="存储地址编号"></el-table-column>
             <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
-            <el-table-column prop="maxCapacityAmount" label="最大存储量"><input type="text" v-model="maxCapacity"/></el-table-column>
-            <!--<el-table-column prop="responsiblePerson" label="工时成本小计(元)">-->
-            <!--</el-table-column>-->
+            <el-table-column prop="maxCapacityAmount" label="最大存储量">
+              <template slot-scope="scope">
+                <el-input type="number"  placeholder="请输入最大存储量" v-model="maxCapacity" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
 
@@ -247,6 +249,28 @@
 
       },
       tianjia(){
+        var _this = this;
+        if (_this.minAmount === '' || _this.maxAmount === '' || _this.maxCapacity === '' || _this.register === ''|| _this.config === ''){
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
+          return false;
+        }
+        if (_this.maxAmount.length < _this.minAmount.length) {
+          _this.$message({
+            message: '警报上限次数>警报下限次数',
+            type: 'warning'
+          });
+          return false;
+        }
+        if (_this.maxCapacity.length<_this.maxAmount.length || _this.maxCapacity.length<_this.minAmount.length){
+          _this.$message({
+            message: '警报上限次数或者警报下限次数不能小于最大存储',
+            type: 'warning'
+          });
+          return false;
+        } else{
 
         var _this = this;
         var params = new URLSearchParams();
@@ -273,7 +297,7 @@
           });}
           _this.getdata();
         }).catch();
-      },
+      }},
       shejiClose(done){
         this.$confirm('确认关闭？') .then(_ => { this.zdwinshow=false; }) .catch(_ => {});
         },

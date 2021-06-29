@@ -55,9 +55,14 @@
         label="入库单编号"
         width="180">
       </el-table-column>
-      <el-table-column
-        prop="reason"
-        label="入库理由">
+      <el-table-column prop="reason" label="入库理由">
+        <template slot-scope="scope">
+          <span v-if="scope.row.reason =='R001-1'" >生产入库</span>
+          <span v-if="scope.row.reason =='R001-2'">库存开始</span>
+          <span v-if="scope.row.reason =='R001-3'" >赠送</span>
+          <span v-if="scope.row.reason =='R001-3'" >内部归还</span>
+          <span v-if="scope.row.reason =='R001-3'" >其他归还</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="checkTime"
@@ -75,17 +80,10 @@
         prop="gatherTag"
         label="入库单状态">
         <template slot-scope="scope">
-                    <span v-if="scope.row.gatherTag =='K003-2'"
-                          style="color:orange"
-                    >等待</span>
-          <span
-            v-else-if="scope.row.gatherTag == 'K003-1'"
-            style="color:greenyellow"
-          >执行</span>
-          <span
-            v-else
-            style="color:red"
-          >不通过</span>
+                    <span v-if="scope.row.gatherTag =='K002-23'" style="color:orange">等待</span>
+                    <span v-if="scope.row.gatherTag =='K002-1'" style="color:orange">已完成</span>
+                    <span v-if="scope.row.gatherTag =='K002-2'" style="color:orange">已调度</span>
+          <span v-else-if="scope.row.gatherTag == 'K003-1'" style="color:greenyellow">执行</span>
         </template>
       </el-table-column>
     </el-table>

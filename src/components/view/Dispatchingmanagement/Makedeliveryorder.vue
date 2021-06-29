@@ -72,9 +72,9 @@
       <!--</template>-->
       <!--</el-table-column>-->
       <el-table-column
-        label="变更">
+        label="制定">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='zhidin(scope.row)'>变更</a>
+          <a href="#" @click.prevent='zhidin(scope.row)'>制定</a>
         </template>
       </el-table-column>
     </el-table>
@@ -152,7 +152,7 @@
         <el-row>
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <strong style="margin-right: 220px">入库单编号:  {{scFrom1.payId}}</strong>
+              <strong style="margin-right: 220px">出库单编号:  {{scFrom1.payId}}</strong>
               <br>
               <br>
               <strong style="margin-right: 310px">产品名称:  {{scFrom1.productName}}</strong>
@@ -297,6 +297,22 @@
 
       },
       tianjia(){
+        if (_this.CapacityAmount === ''){
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
+          return false
+        }
+        if (_this.CapacityAmount>_this.scFrom.maxCapacityAmount) {
+          alert(_this.CapacityAmount)
+          alert(_this.scFrom.maxCapacityAmount)
+          _this.$message({
+            message: '已经大于最大存储',
+            type: 'warning'
+          });
+          return false
+        }
         this.diaodumode = false;
         var _this = this;
         var params = new URLSearchParams();
@@ -304,7 +320,10 @@
         params.append("productId",_this.scFrom4.productId);
 
         if (_this.CapacityAmount.length<0){
-          alert("不能为空")
+          _this.$message({
+            message: '不能为空',
+            type: 'warning'
+          });
         }
         axios.post("/sPay/savDeliverySGatherDetails.action",params).then(function (response) {
           if (response.data == true) {
