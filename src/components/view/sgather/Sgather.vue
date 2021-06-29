@@ -35,10 +35,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="amountUnit" label="单位"></el-table-column>
-      <el-table-column prop="realCostPrice" label="成本单价(元)"></el-table-column>
+      <el-table-column prop="costPrice" label="成本单价(元)"></el-table-column>
       <el-table-column prop="subtotal" label="小记(元)">
         <template slot-scope="scope">
-          <strong> {{scope.row.amount*scope.row.realCostPrice}}</strong>
+          <strong> {{scope.row.amount*scope.row.costPrice}}</strong>
         </template>
       </el-table-column>
       <el-table-column label="操作"><template slot-scope="scope"><a href="#" @click.prevent='del(index)'>删除</a></template></el-table-column>
@@ -81,7 +81,7 @@
             <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
             <el-table-column prop="productDescribe" label="描述" width="180"></el-table-column>
             <el-table-column prop="amountUnit" label="单位"></el-table-column>
-            <el-table-column prop="realCostPrice" label="成本单价(元)"></el-table-column>
+            <el-table-column prop="costPrice" label="成本单价(元)"></el-table-column>
             <el-table-column label="入库">
               <template slot-scope="scope">
                 <a href="#" @click.prevent='tian(scope.row)'>入库</a>
@@ -221,7 +221,7 @@
           newArr.push(
             Object.assign({}, item, {
               "subtotal":_this.subtotal,
-              "realCostPrice":item.realCostPrice,
+              "costPrice":item.costPrice,
               "amount":item.amount,
 
             })
@@ -290,7 +290,7 @@
         var _this = this;
         var shu= 0;
         this.nulltable.forEach(function (item,index) {
-            shu= _this.nulltable[index].amount* item.realCostPrice;
+            shu= _this.nulltable[index].amount* item.costPrice;
           totalprice+=shu;
         })
         this.subtotal=shu;

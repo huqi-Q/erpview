@@ -340,6 +340,8 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("productId",row.productId);
+        params.append("id",row.id);
+        console.log(row.id)
 
         axios.post("/dFile/querybyproductid.action",params).then(function (response) {
           _this.scFrom3=response.data[0];

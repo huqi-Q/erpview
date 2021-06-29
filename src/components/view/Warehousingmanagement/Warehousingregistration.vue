@@ -121,7 +121,7 @@
             <el-table-column prop="gatheredAmount" label="已库数量"></el-table-column>
             <el-table-column prop="bengcisun"  label="本次库数量">
               <template slot-scope="scope">
-                <el-input type="number"  placeholder="请输入内容" v-model="scope.row.bengcisun" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+                <el-input type="number"  placeholder="请输入内容" v-model="bengcisun" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
               </template>
               <!--<input type="text" v-model="bengcisun">-->
             </el-table-column>
@@ -168,7 +168,7 @@
     data() {
       return {
         tableData: [],
-        // bengcisun: [],
+        bengcisun: "",
         scgxtabs:[],
         productFrom:{},
         options:[],

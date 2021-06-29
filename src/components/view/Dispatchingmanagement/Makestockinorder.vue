@@ -163,18 +163,18 @@
               <strong >产品编号: {{scFrom1.productId}}</strong>
               <br>
               <br>
-              <strong >成本价格: {{scFrom3.realCostPrice}}</strong>
+              <strong >成本价格: {{}}</strong>
             </div>
           </el-col>
         </el-row>
         <br>
         <!--生产工序-->
         <div>
-          <el-table :data="scFrom" stripe border style="width: 100%">
+          <el-table :data="xianqinngb" stripe border style="width: 100%">
             <el-table-column prop="id" label="序号" width="180"></el-table-column>
             <el-table-column prop="warehouseName" label="库房名称"></el-table-column>
             <el-table-column prop="productId" label="存储地址编号"></el-table-column>
-            <el-table-column prop="amountSum" label="存储地址名称"></el-table-column>
+            <el-table-column prop="thirdKindName" label="存储地址名称"></el-table-column>
             <el-table-column prop="maxCapacityAmount" label="当前最大存储"></el-table-column>
             <el-table-column prop="gatheredAmountSum" label="本次入库数量">
               <template slot-scope="scope">
@@ -245,6 +245,7 @@
         name: "",
         remark: "",
         value: "",
+        xianqinngb: [],
         shortcuts: "",
         value1: '',
         value2: '',
@@ -338,12 +339,16 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("productId",row.productId);
+        console.log(row.productId)
 
         axios.post("/dFile/querybyproductid.action",params).then(function (response) {
           _this.scFrom3=response.data[0];
         }).catch();
         axios.post("/sGatherDetails/querybyproductid.action",params).then(function (response) {
           _this.scFrom4=response.data[0];
+        }).catch();
+        axios.post("/sGatherDetails/selectxianqin.action",params).then(function (response) {
+          _this.xianqinngb=response.data;
         }).catch();
       },
       fanhuei(){
