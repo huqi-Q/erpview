@@ -399,7 +399,7 @@
                       this.$axios.post("/mDesignProcedure/addProcedure.action",JSON.stringify(newArr)
                         ,{headers:{"Content-Type":"application/json"}}
                       ).then(function (response) {}).catch();
-                      this.getdata();
+
                       this.$message({
                         type: 'success',
                         message: '设计成功!'
@@ -411,7 +411,7 @@
                         message: '已取消设计'
                       });
                     });
-
+                    _this.getdata();
 
 
 

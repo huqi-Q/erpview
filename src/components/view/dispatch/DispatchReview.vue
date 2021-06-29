@@ -35,9 +35,9 @@
         label="登记时间">
       </el-table-column>
       <el-table-column
-        label="登记">
+        label="审核">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='shsjd(scope.row)'>登记</a>
+          <a href="#" @click.prevent='shsjd(scope.row)'>审核</a>
         </template>
       </el-table-column>
     </el-table>
@@ -53,7 +53,7 @@
     </el-pagination>
 
     <el-dialog width="80%" title="生产派工单" :visible="gxwinshow">
-      <el-button style="margin-left:1100px" @click="qx1">确定</el-button>
+      <el-button style="margin-left:1100px" @click="qd">确定</el-button>
       <el-button  @click="qx1">返回</el-button>
       <el-card style="width:1200px;margin-left:150px" class="box-card">
         <div>
@@ -188,6 +188,78 @@
         </div>
       </el-card>
     </el-dialog>
+    <el-dialog width="80%" title="物料列表" :visible="wlwinshow">
+      <el-card style="width:1200px;margin-left:150px" class="box-card">
+        <div>
+          <el-header><h3>工序物料单</h3></el-header>
+          <el-main>
+            <el-form  :modal="scFrom">
+              <el-row>
+                <el-col :span="12">
+                  <div class="grid-content bg-purple">
+                    <strong style="margin-right: 220px">设 计 单 编 号  :{{sjId}} </strong>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="grid-content bg-purple-light">
+                    <strong style="margin-right: 220px"> 工序名称:{{tname}} </strong>
+                    <el-button @click="qx2">返回</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+
+
+              <br>
+              <!--产品-->
+              <div>
+                <el-table
+                  :data="wlData"
+                  stripe
+                  border
+                  style="width: 100%">
+                  <el-table-column
+                    type="selection"
+                    label="点选"
+                    width="55">
+                  </el-table-column>
+                  <el-table-column
+                    prop="productName"
+                    label="产品名称"
+                    width="180">
+                  </el-table-column>
+                  <el-table-column
+                    prop="productId"
+                    label="产品编号">
+                  </el-table-column>
+                  <el-table-column
+                    prop="register"
+                    label="描述">
+                  </el-table-column>
+                  <el-table-column
+                    prop="amount"
+                    label="本工序数量">
+                  </el-table-column>
+                  <el-table-column
+                    prop="amountUnit"
+                    label="单位">
+                  </el-table-column>
+                  <el-table-column
+                    prop="costPrice"
+                    label="单价（元）">
+                  </el-table-column>
+                  <el-table-column
+                    prop="subtotal"
+                    label="小计(元)">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <br>
+            </el-form>
+
+          </el-main>
+        </div>
+      </el-card>
+    </el-dialog>
   </div>
 </template>
 
@@ -202,6 +274,8 @@
         scgxtableData:[],
         options:[],
         value:"",
+        tname:"",
+        sjId:"",
         pageno: 1,
         pagesize: 5,
         total: 0,
@@ -211,6 +285,7 @@
         scFrom:{},
         productName: "",
         gxwinshow:false,
+        wlwinshow:false,
         remark: "",
         shortcuts: [{
           text: '最近一周',
@@ -269,6 +344,25 @@
       },qx1(){
         this.gxwinshow=false;
       },
+      qd(){
+        var _this=this;
+        var params = new URLSearchParams();
+        params.append("manufactureId", this.scFrom.manufactureId);
+        this.$axios.post("/mManufacture/updateById", params).then(function (response) {
+          if(response.data==true){
+            _this.$message({
+              type: 'success',
+              message: '审核成功!'
+            });
+          }
+          this.zdwinshow=false;
+          this.getdata();
+
+        }).catch();
+      },
+      qx2(){
+        this.wlwinshow=false;
+      },
       tjgx(row){
         var _this = this;
         var params = new URLSearchParams();
@@ -287,7 +381,7 @@
           // _this.total = response.data.total;
         }).catch();
 
-        this.gxwinshow=true;
+        this.wlwinshow=true;
       },
       shsjd(row){
 

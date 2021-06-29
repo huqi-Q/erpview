@@ -501,7 +501,7 @@
       },
       wf1(row){
         var _this = this;
-        this.gxwinshow = true;
+
         this.vcs=row.procedureName;
         this.pid=row.id;
         this.djr=row.register;
@@ -509,6 +509,15 @@
         params.append("id",_this.scFrom.productId);
         this.$axios.post("/mDesignProcedure/loadAllDModuleDetailsById.action",params).then(function (response) {
           _this.manufactureData = response.data;
+          if(_this.manufactureData.length>0){
+            _this.gxwinshow = true;
+          }else {
+            _this.$confirm('物料组成设计尚未完成，不能进行工序物料设计', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {}).catch(() => {});
+          }
         }).catch();
       },
       wf2(row){

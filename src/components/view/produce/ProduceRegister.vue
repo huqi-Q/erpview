@@ -7,6 +7,12 @@
       border
       style="width: 100%">
       <el-table-column
+        prop="id"
+        label="生产派工单编号"
+        v-if="false"
+        width="180">
+      </el-table-column>
+      <el-table-column
         prop="manufactureId"
         label="生产派工单编号"
         width="180">
@@ -46,7 +52,7 @@
       :total="total">
     </el-pagination>
 
-    <el-dialog width="80%" title="生产派工单" :visible="gxwinshow">
+    <el-dialog width="80%" title="生产派工单" :visible="scwinshow">
       <el-button style="margin-left:1200px" @click="qx1">返回</el-button>
       <el-card style="width:1200px;margin-left:150px" class="box-card">
         <div>
@@ -88,35 +94,16 @@
                   border
                   style="width: 100%">
                   <el-table-column
-                    prop="id"
-                    v-if="false"
-                    label="工序id">
-                  </el-table-column>
-                  <el-table-column
-                    prop="parentId"
-                    v-if="false"
-                    label="工序id">
-                  </el-table-column>
-                  <el-table-column
-                    prop="detailsNumber"
-                    v-if="false"
-                    label="工序id">
-                  </el-table-column>
-                  <el-table-column
-                    prop="procedureId"
-                    label="工序编号">
-                  </el-table-column>
-                  <el-table-column
                     prop="procedureName"
                     label="工序名称"
                     width="180">
                   </el-table-column>
                   <el-table-column
-                    prop="procedureDescribe"
-                    label="工序描述">
+                    prop="labourHourAmount"
+                    label="设计工时数">
                   </el-table-column>
                   <el-table-column
-                    prop="labourHourAmount"
+                    prop="subtotal"
                     label="工时数(小时)">
                   </el-table-column>
                   <el-table-column
@@ -128,9 +115,9 @@
                     label="工时成本小计（元）">
                   </el-table-column>
                   <el-table-column
-                    label="审核物料">
+                    label="工序登记">
                     <template slot-scope="scope">
-                      <a href="#" @click.prevent='tjgx(scope.row)'>审核物料</a>
+                      <a href="#" @click.prevent='tjgx(scope.row)'>登记</a>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -181,6 +168,79 @@
         </div>
       </el-card>
     </el-dialog>
+    <el-dialog width="80%" title="物料列表" :visible="gxwinshow">
+      <el-card style="width:1200px;margin-left:150px" class="box-card">
+        <div>
+          <el-header><h3>工序物料单</h3></el-header>
+          <el-main>
+            <el-form  :modal="scFrom">
+              <el-row>
+                <el-col :span="12">
+                  <div class="grid-content bg-purple">
+                    <strong style="margin-right: 220px">设 计 单 编 号  :{{sjId}} </strong>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="grid-content bg-purple-light">
+                    <strong style="margin-right: 220px"> 工序名称:{{tname}} </strong>
+                    <el-button @click="qx1">返回</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+
+
+              <br>
+              <!--产品-->
+              <div>
+                <el-table
+                  :data="wlData"
+                  stripe
+                  border
+                  style="width: 100%">
+                  <el-table-column
+                    type="selection"
+                    label="点选"
+                    width="55">
+                  </el-table-column>
+                  <el-table-column
+                    prop="productName"
+                    label="产品名称"
+                    width="180">
+                  </el-table-column>
+                  <el-table-column
+                    prop="productId"
+                    label="产品编号">
+                  </el-table-column>
+                  <el-table-column
+                    prop="register"
+                    label="描述">
+                  </el-table-column>
+                  <el-table-column
+                    prop="amount"
+                    label="本工序数量">
+                  </el-table-column>
+                  <el-table-column
+                    prop="amountUnit"
+                    label="单位">
+                  </el-table-column>
+                  <el-table-column
+                    prop="costPrice"
+                    label="单价（元）">
+                  </el-table-column>
+                  <el-table-column
+                    prop="subtotal"
+                    label="小计(元)">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <br>
+            </el-form>
+
+          </el-main>
+        </div>
+      </el-card>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -204,6 +264,7 @@
           scFrom:{},
           productName: "",
           gxwinshow:false,
+          scwinshow:false,
           remark: "",
           shortcuts: [{
             text: '最近一周',
@@ -236,7 +297,7 @@
       methods: {
         getdata() {   //获取数据
           var _this = this;
-          this.$axios.post("/mManufacture/selectByzt1").then(function (response) {
+          this.$axios.post("/mManufacture/selectByzt2").then(function (response) {
             _this.tableData = response.data;
             // _this.total = response.data.total;
           }).catch();
@@ -260,7 +321,7 @@
         qx(){
           this.zdwinshow=false;
         },qx1(){
-          this.gxwinshow=false;
+          this.scwinshow=false;
         },
         tjgx(row){
           var _this = this;
@@ -284,30 +345,21 @@
       },
         shsjd(row){
 
-          this.scFrom.productName=row.productName;
-          this.scFrom.productId=row.productId;
-          this.scFrom.amount=row.amount;
-          this.scFrom.manufactureId=row.manufactureId;
+          // this.scFrom.productName=row.productName;
+          // this.scFrom.productId=row.productId;
+          // this.scFrom.amount=row.amount;
+          // this.scFrom.manufactureId=row.manufactureId;
 
           var _this = this;
           var params = new URLSearchParams();
-          params.append("productId", row.productId);
+          params.append("id", row.id);
 
-          this.$axios.post("/mDesignProcedure/queryById", params).then(function (response) {
+          this.$axios.post("/mManufacture/queryById", params).then(function (response) {
 
             _this.scgxtableData=response.data;
-            if(_this.scgxtableData.length>0){
-              _this.zdwinshow=true;
-            }else {
-              _this.$confirm('对不起，该产品的工序设计或工序物料设计尚未完成，不能制定生产派工单', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {}).catch(() => {});
-            }
 
           }).catch();
-          this.gxwinshow=true;
+          this.scwinshow=true;
 
         },
       },
