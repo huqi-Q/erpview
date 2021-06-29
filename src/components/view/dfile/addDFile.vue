@@ -1,5 +1,6 @@
 <template>
   <div>
+    <component v-bind:is="addfie">
       <div class="text item">
     <p style="background-color: deepskyblue;color: white">主信息</p>
     <el-form :model="ruleForm"  :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -100,12 +101,16 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="市场单价" prop="listPrice">
-            <el-input v-model="ruleForm.listPrice"></el-input>
+            <template slot-scope="scope">
+              <el-input type="number"  placeholder="请输入内容" v-model="ruleForm.listPrice" clearable oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+            </template>
+            <!--<el-input v-model="ruleForm.listPrice"></el-input>-->
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="计划成本价" prop="costPrice">
-            <el-input v-model="ruleForm.costPrice"></el-input>
+            <el-input type="number"  placeholder="请输入内容" v-model="ruleForm.costPrice" clearable oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+            <!--<el-input v-model="ruleForm.costPrice"></el-input>-->
           </el-form-item>
         </el-col>
       </el-row>
@@ -164,11 +169,11 @@
             <el-input v-model="ruleForm.register"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="建档时间">
-            <el-input v-model="ruleForm.registerTime"></el-input>
-          </el-form-item>
-        </el-col>
+        <!--<el-col :span="12">-->
+          <!--<el-form-item label="建档时间">-->
+            <!--<el-input v-model="ruleForm.registerTime"></el-input>-->
+          <!--</el-form-item>-->
+        <!--</el-col>-->
       </el-row>
       <el-form-item>
         <el-button type="primary" @click="submitForm">立即创建</el-button>
@@ -176,10 +181,12 @@
       </el-form-item>
     </el-form>
       </div>
+    </component>
   </div>
 </template>
 <script>
   import xianqin from "../xianqin"
+  import addDFile from "../dfile/addDFile"
   export default {
     name:"Record",
     data() {
@@ -222,7 +229,7 @@
         }
       }
     },
-    components:{xianqin},
+    components:{xianqin,addDFile},
     methods:{
       getdataConfig(){
         this.$axios.post("/dConfigFileKind/queryconfig").then(response =>{

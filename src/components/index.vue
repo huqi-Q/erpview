@@ -176,10 +176,10 @@
 
 
 <style>
-  /*.el-menu-vertical-demo:not(.el-menu--collapse) {*/
-    /*width: 100%;*/
-    /*min-height: 100%;*/
-  /*}*/
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 100%;
+    min-height: 100%;
+  }
   /*头部*/
   .el-header, .el-footer {
     background-color: #262f3e;
@@ -198,7 +198,7 @@
     background-color: white;
     color: white;
     border-left: 1px white solid;
-    /*text-align: center;*/
+    text-align: center;
   }
 
 
