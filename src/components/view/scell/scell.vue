@@ -96,7 +96,7 @@
     </el-pagination>
 
     <!--  设计单-->
-    <el-dialog width="80%" title="制定安全库存配置单" :visible="zdwinshow">
+    <el-dialog width="80%" title="制定安全库存配置单" :visible="zdwinshow" :before-close="shejiClose">
 
       <el-form  :modal="scFrom1">
         <el-row>
@@ -274,6 +274,9 @@
           _this.getdata();
         }).catch();
       },
+      shejiClose(done){
+        this.$confirm('确认关闭？') .then(_ => { this.zdwinshow=false; }) .catch(_ => {});
+        },
       zhidin(id){
       this.zdwinshow = true;
       var _this = this;

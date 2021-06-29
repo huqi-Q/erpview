@@ -1,5 +1,6 @@
 <template>
   <div>
+    <component v-bind:is="addfie">
     <el-form :inline="true">
       <el-form-item label="入库人">
       <el-input placeholder="请输入入库人" clearable   v-model="storer" ></el-input>
@@ -26,12 +27,18 @@
       <el-table-column prop="productName" label="产品名称" width="180"/>
       <el-table-column prop="productId" label="产品编号" width="180"></el-table-column>
       <el-table-column prop="productDescribe" label="描述" width="180"></el-table-column>
-      <el-table-column prop="amount" label="数量"><input type="text" v-model="amount"/></el-table-column>
+      <el-table-column prop="amount" label="数量">
+        <template slot-scope="scope">
+          <el-input type="number"  placeholder="请输入内容" v-model="scope.row.amount" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+
+          <!--<input type="text" v-model="scope.row.amount"/>-->
+        </template>
+      </el-table-column>
       <el-table-column prop="amountUnit" label="单位"></el-table-column>
       <el-table-column prop="realCostPrice" label="成本单价(元)"></el-table-column>
       <el-table-column prop="subtotal" label="小记(元)">
         <template slot-scope="scope">
-          <strong> {{amount*scope.row.realCostPrice}}</strong>
+          <strong> {{scope.row.amount*scope.row.realCostPrice}}</strong>
         </template>
       </el-table-column>
       <el-table-column label="操作"><template slot-scope="scope"><a href="#" @click.prevent='del(index)'>删除</a></template></el-table-column>
@@ -101,12 +108,14 @@
         <el-button type="primary" @click="scgx">确 定</el-button>
       </div>
     </el-dialog>
+    </component>
   </div>
 </template>
 
 
 <script>
   import  axios from 'axios'
+  import xianqin from '../xianqin'
   export default {
     name: "sgather",
     data() {
@@ -142,6 +151,7 @@
         sgatherData: [],
         zdwinshow: false,
         storer: "",
+        addfie: "Sgather",
         remaek: "",
         value: "",
         reason: "",
@@ -153,7 +163,7 @@
         currentTime: new Date(),
         amountSum: "",
       }
-    },
+    },components:{xianqin},
     methods: {
       getdata() {   //获取数据
         var _this = this;
@@ -224,12 +234,9 @@
         }).then(() => {
           this.$axios.post("/sGather/addSgatherdetails.action",JSON.stringify(newArr)
             ,{headers:{"Content-Type":"application/json"}}
-          ).then(function (response) {}).catch();
-          this.getdata();
-          this.$message({
-            type: 'success',
-            message: '提交成功!'
-          });
+          ).then(function (response) {
+            _this.addfie='xianqin'
+          }).catch();
           this.zdwinshow = false;
         }).catch(() => {
           this.$message({
@@ -237,23 +244,6 @@
             message: '提交失败'
           });
         });
-        //
-        // this.$axios.post("/sGather/addSgatherdetails.action",params).then(function (response) {
-        //   if (response.data == true) {
-        //     _this.$notify({
-        //       title: '成功',
-        //       message: '入库成功',
-        //       type: 'success'
-        //     });
-        //     _this.nulltable=[];
-        //   } else {
-        //     _this.$notify({
-        //       title: '失败',
-        //       message: '入库失败',
-        //       type: 'danger'
-        //     });
-        //   }
-        // }).catch();
       },
       handleSizeChange(val) {  //页size变更
         this.pagesize = val;
@@ -282,7 +272,7 @@
         var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
         _this.currentTime = //修改数据date
           new Date().getFullYear() +
-          "-" +
+          "-" +amount
           (new Date().getMonth() + 1) +
           "-" +
           new Date().getDate() +
@@ -299,8 +289,8 @@
         var totalprice = 0;
         var _this = this;
         var shu= 0;
-        this.nulltable.forEach(function (item) {
-            shu= _this.amount * item.realCostPrice;
+        this.nulltable.forEach(function (item,index) {
+            shu= _this.nulltable[index].amount* item.realCostPrice;
           totalprice+=shu;
         })
         this.subtotal=shu;

@@ -119,9 +119,9 @@
             <el-table-column prop="thirdKindName" label="存放地址"></el-table-column>
             <el-table-column prop="amount" label="应入库数量"></el-table-column>
             <el-table-column prop="gatheredAmount" label="已库数量"></el-table-column>
-            <el-table-column prop="productName" label="本次库数量">
+            <el-table-column prop="bengcisun"  label="本次库数量">
               <template slot-scope="scope">
-                <el-input type="number"  placeholder="请输入内容" v-model="bengcisun" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+                <el-input type="number"  placeholder="请输入内容" v-model="scope.row.bengcisun" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
               </template>
               <!--<input type="text" v-model="bengcisun">-->
             </el-table-column>
@@ -168,7 +168,7 @@
     data() {
       return {
         tableData: [],
-        bengcisun: "",
+        // bengcisun: [],
         scgxtabs:[],
         productFrom:{},
         options:[],
@@ -268,7 +268,7 @@
         params.append("id", this.scgxtabs.id);
         params.append("gatheredAmount",this.scgxtabs.gatheredAmount);
         params.append("amount",this.scgxtabs.amount);
-        params.append("gatheres",this.bengcisun);
+        params.append("gatheres",this.scgxtableData.bengcisun);
         this.$axios.post("/sGatherDetails/updategatheredamountbyid.action",params).then(function (response) {
           if(response.data==true){
             _this.$message.success({
