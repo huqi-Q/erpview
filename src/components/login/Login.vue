@@ -3,8 +3,6 @@
     <el-form class="login-form" :model="loginForm" ref="loginForm" :rules="rules"  label-position="left" label-width="0px" autoComplete="on">
       <h3 class="login_title">系统登录</h3>
       <div class="login-body">
-        root
-        123456789
         <el-form-item prop="username">
           <el-input type="text" v-model="loginForm.loginName" auto-complete="off" placeholder="账号"></el-input>
           <div class="login-username" slot="prepend"></div>
