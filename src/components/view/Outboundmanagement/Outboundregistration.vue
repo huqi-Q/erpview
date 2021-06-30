@@ -146,7 +146,7 @@
           </el-col>
           <el-col :span="12"><div class="grid-content bg-purple-light">
             <strong>已出库总件数:  {{scgxtableData.paidAmount}}</strong><br>
-            <strong>已出库总成本:  {{scgxtableData.zonchenbrn}}</strong><br>
+            <strong>已出库总成本:  {{scgxtableData.paidAmount*10}}</strong><br>
             <strong>登计时间:  {{currentTime}}</strong>
           </div></el-col>
         </el-row>

@@ -120,7 +120,10 @@
             <el-table-column prop="amount" label="应出库数量"></el-table-column>
             <el-table-column prop="paidAmount" label="已出库数量"></el-table-column>
             <el-table-column label="本次出库数量">
-              <input type="text" v-model="scgxtab.paidant">
+              <template slot-scope="scope">
+              <el-input type="number"  placeholder="请输入内容"v-model="scgxtab.paidant" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+              <!--<input type="text" v-model="scgxtab.paidant">-->
+              </template>
             </el-table-column>
           </el-table>
         </div>
@@ -142,7 +145,7 @@
           </el-col>
           <el-col :span="12"><div class="grid-content bg-purple-light">
             <strong>已出库总件数:  {{scgxtableData.paidAmount}}</strong><br>
-            <strong>已出库总成本:  {{scgxtableData.zonchenbrn}}</strong><br>
+            <strong>已出库总成本:  {{scgxtableData.paidAmount*10}}</strong><br>
             <strong>登计时间:  {{currentTime}}</strong>
           </div></el-col>
         </el-row>

@@ -2,6 +2,8 @@
   <div id="app" class="homeWrap">
     <el-container style="height: 100%;">
       <el-header style="height: 80px; position: fixed; z-index: 1; width: 100%">ERP管理系统
+
+        退出系统
       </el-header>
       <el-container style="padding-top: 80px; height: 100%;">
         <el-aside style="width: 260px " >
