@@ -64,15 +64,16 @@
                 label="单位">
               </el-table-column>
               <el-table-column
+                prop="costPrice"
                 label="单价（元）">
-                <template slot-scope="scope">
-                  <input class="mbk" readonly="readonly" v-model="scope.row.realCostPrice" type="text"></input>
-                </template>
+<!--                <template slot-scope="scope">-->
+<!--                  <input class="mbk" readonly="readonly" v-model="scope.row.realCostPrice" type="text"></input>-->
+<!--                </template>-->
               </el-table-column>
               <el-table-column
                 label="小计(元)">
                 <template slot-scope="scope">
-                  {{labourHourAmount*scope.row.realCostPrice}}
+                  {{labourHourAmount*scope.row.costPrice}}
                 </template>
               </el-table-column>
             </el-table>
@@ -130,7 +131,7 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="realCostPrice"
+          prop="costPrice"
           label="单价"
           width="180">
         </el-table-column>

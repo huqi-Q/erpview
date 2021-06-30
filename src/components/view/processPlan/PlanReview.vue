@@ -275,6 +275,8 @@
                   });
                 }
           }).catch();
+          this.jhwinshow=false;
+          this.getdata();
         }
       },
       created() {

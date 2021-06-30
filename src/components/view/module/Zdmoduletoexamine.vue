@@ -89,16 +89,10 @@
             <el-table-column
               prop="amount"
               label="数量">
-              <template slot-scope="scope">
-                <input class="mbk" v-model="scope.row.addmodulemount" type="text"></input>
-              </template>
             </el-table-column>
             <el-table-column prop="amountUnit" label="单位"></el-table-column>
             <el-table-column prop="costPrice" label="计划成本单价(元)"></el-table-column>
             <el-table-column prop="subtotal" label="小计(元)">
-              <template slot-scope="scope">
-                {{scope.row.addmodulemount*scope.row.costPrice}}
-              </template>
             </el-table-column>
           </el-table>
         </div>

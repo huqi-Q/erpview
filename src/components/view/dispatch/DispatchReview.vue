@@ -286,6 +286,7 @@
         productName: "",
         gxwinshow:false,
         wlwinshow:false,
+        zdwinshow:false,
         remark: "",
         shortcuts: [{
           text: '最近一周',
@@ -355,7 +356,7 @@
               message: '审核成功!'
             });
           }
-          this.zdwinshow=false;
+          this.gxwinshow=false;
           this.getdata();
 
         }).catch();

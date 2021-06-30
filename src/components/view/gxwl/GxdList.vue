@@ -452,17 +452,18 @@
         var arr = this.manufactureData;
         let newArr = [];
         arr.map((item, index) => {
+          console.log(this.manufactureData[index].sl);
           newArr.push(
             Object.assign({}, item, {
               "productId":item.productId,
               "productName":item.productName,
               "productDescribe":item.productDescribe,
-              "amount":this.manufactureData[index].sl,
+              "amount":_this.manufactureData[index].sl,
               "amountUnit":item.amountUnit,
               "costPrice":item.costPrice,
               "detailsNumber":item.id,
-              "parentId":this.pid,
-              "productId1":this.scFrom.productId
+              "parentId":_this.pid,
+              "productId1":_this.scFrom.productId
             })
           )
         })

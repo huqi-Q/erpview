@@ -393,6 +393,7 @@
           dx.productId=_this.scFrom.productId
 
           dx.id=_this.scFrom.id
+          dx.id1=item.id
           dx.productName=_this.scFrom.productName
           dx.productDescribe=item.productDescribe
           dx.amount=_this.scFrom.amount
