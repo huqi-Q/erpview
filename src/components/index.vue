@@ -94,6 +94,7 @@
   import ProduceRegister from "./view/produce/ProduceRegister";
   import ProduceReview from "./view/produce/ProduceReview";
   import ProduceList from "./view/produce/ProduceList";
+  import QueryallDodulezcsj from "./view/module/QueryallDodulezcsj";
 
   export default {
     name: 'index',
@@ -169,7 +170,7 @@
       Outboundapplicationregistration,Makestockinorder,Makedeliveryorder,
       ProcessList,Welcome,ProcessFormulate,ProcessReview,scell,SafetyStockAudit,
       SafetyStockConfigurationChange,SafetyStockConfigurationQuery,PlanReview,PlanList
-      ,DevelopDispatch,DispatchList,DispatchReview,ProduceRegister,ProduceReview,ProduceList
+      ,DevelopDispatch,DispatchList,DispatchReview,ProduceRegister,ProduceReview,ProduceList,QueryallDodulezcsj
     }
   }
 </script>

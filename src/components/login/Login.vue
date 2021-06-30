@@ -60,7 +60,7 @@
           params.append("loginId", this.loginForm.loginName);
           params.append("password", this.loginForm.pwd);
 
-          axios.post("sysLogs/syslogin",params).then(function (response) {
+          axios.post("sysUsers/syslogin",params).then(function (response) {
             if (response.data==true){
               _this.$message({
                 message: '登录成功',
