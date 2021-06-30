@@ -333,13 +333,13 @@
             <el-table-column
               label="本工序数量">
               <template slot-scope="scope">
-                <input type="text" v-model="sl"></input>
+                <el-input type="number"  placeholder="请输入本工序数量" v-model="scope.row.sl" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
               </template>
             </el-table-column>
             <el-table-column
               label="小计">
               <template slot-scope="scope">
-                {{sl*scope.row.costPrice}}
+                {{scope.row.sl*scope.row.costPrice}}
               </template>
             </el-table-column>
           </el-table>
@@ -379,6 +379,7 @@
         scFrom:{},
         pageno: 1,
         pagesize: 5,
+        row1:{},
         total: 0,
         firstKindId:"",
         firstKindName:"",
@@ -467,7 +468,7 @@
               "productId":item.productId,
               "productName":item.productName,
               "productDescribe":item.productDescribe,
-              "amount":this.sl,
+              "amount":this.manufactureData[index].sl,
               "amountUnit":item.amountUnit,
               "costPrice":item.costPrice,
               "detailsNumber":item.id,
@@ -477,7 +478,7 @@
           )
         })
 
-        if(this.sl==""){
+        if(this.manufactureData[0].sl==""){
           this.$message({
             message: '工序数量不能为空！',
             type: 'warning'
@@ -515,9 +516,11 @@
       wf1(row){
         var _this = this;
         this.gxwinshow2 = true;
+        this.row1=row;
         this.vcs=row.procedureName;
         this.pid=row.id;
         this.djr=row.register;
+        console.log("我就是物料成本");
         var params = new URLSearchParams();
         params.append("id",_this.pid);
         this.$axios.post("/mDesignProcedure/loadGXwlMDesignProcedureModuleById.action",params).then(function (response) {
@@ -541,43 +544,50 @@
         }).catch();
       },
       qqsb(){
+
         var _this=this;
         this.$confirm('变更将首先清除原有本工序物料的设计，您确认进行变更吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+
           var params2 = new URLSearchParams();
-          params2.append("id",_this.id);
+          params2.append("id",_this.pid);
           this.$axios.post("/mDesignProcedure/GgLgLs.action",params2).then(function (response) {
           }).catch();
-
+          console.log("我刷新了物料成本");
           var params = new URLSearchParams();
           params.append("id",_this.pid);
-          this.$axios.post("/mDesignProcedure/GxWlCxSj.action",params).then(function (response) {
+          this.$axios.post("/mDesignProcedure/GxWlCxSj2.action",params).then(function (response) {
             _this.$message({
               type: 'success',
               message: '已清除原有本工序物料的设计,请重新设计!'
             });
           }).catch();
+
           _this.gxwinshow2 = false;
 
-          this.gxwinshow = true;
           var params9 = new URLSearchParams();
           params9.append("id",_this.scFrom.productId);
           this.$axios.post("/mDesignProcedure/loadAllDModuleDetailsById.action",params9).then(function (response) {
             _this.manufactureData = response.data;
           }).catch();
+          _this.gxwinshow = true;
+
+
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消变更'
           });
         });
+
       },
       zd(id){
         this.zdwinshow = true;
         var _this = this;
+
         this.id=id;
         var params = new URLSearchParams();
         params.append("id",id);
@@ -588,6 +598,7 @@
         params1.append("id",id);
         this.$axios.post("/mDesignProcedure/loadAllMDesignProcedureDetailsById.action",params1).then(function (response) {
           _this.scgxtableData=response.data;
+
         }).catch();
       },
       handleCurrentChange(val) {  //页码变更
@@ -604,6 +615,19 @@
     },
     created() {
       this.getdata();
+      var _this = this; //声明一个变量指向Vue实例this，保证作用域一致
+      _this.currentTime = //修改数据date
+        new Date().getFullYear() +
+        "-" +
+        (new Date().getMonth() + 1) +
+        "-" +
+        new Date().getDate() +
+        " " +
+        new Date().getHours() +
+        ":" +
+        new Date().getMinutes() +
+        ": " +
+        new Date().getSeconds();
     }
   }
 </script>

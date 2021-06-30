@@ -230,8 +230,6 @@
             label="本工序数量">
             <template slot-scope="scope">
               <el-input type="number"  placeholder="请输入本工序数量" v-model="scope.row.sl" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
-
-              <!--<input type="text" v-model="sl"></input>-->
             </template>
           </el-table-column>
           <el-table-column
@@ -467,8 +465,7 @@
             })
           )
         })
-
-        if(this.manufactureData.sl==""){
+        if(this.manufactureData[0].sl==""){
           this.$message({
             message: '工序数量不能为空！',
             type: 'warning'
