@@ -229,13 +229,16 @@
           <el-table-column
             label="本工序数量">
             <template slot-scope="scope">
-              <input type="text" v-model="sl"></input>
+              <el-input type="number"  placeholder="请输入本工序数量" v-model="scope.row.sl" clearable  oninput="value=value.replace(/[^0-9.]/g,'')"></el-input>
+
+              <!--<input type="text" v-model="sl"></input>-->
             </template>
           </el-table-column>
           <el-table-column
             label="小计">
             <template slot-scope="scope">
-             {{sl*scope.row.costPrice}}
+              <span  v-if="scope.row.sl==null"></span>
+             {{scope.row.sl*scope.row.costPrice}}
             </template>
           </el-table-column>
         </el-table>
@@ -454,7 +457,7 @@
               "productId":item.productId,
               "productName":item.productName,
               "productDescribe":item.productDescribe,
-              "amount":this.sl,
+              "amount":this.manufactureData[index].sl,
               "amountUnit":item.amountUnit,
               "costPrice":item.costPrice,
               "detailsNumber":item.id,
@@ -464,7 +467,7 @@
           )
         })
 
-        if(this.sl==""){
+        if(this.manufactureData.sl==""){
           this.$message({
             message: '工序数量不能为空！',
             type: 'warning'

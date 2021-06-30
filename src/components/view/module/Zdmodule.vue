@@ -98,7 +98,7 @@
       <el-table-column
         label="制定设计单">
         <template slot-scope="scope">
-          <a href="#" @click.prevent='zd(scope.row.productId)'>制定设计单</a>
+          <a href="#" @click.prevent='zd(scope.row)'>制定设计单</a>
         </template>
       </el-table-column>
     </el-table>
@@ -146,6 +146,10 @@
               width="55">
             </el-table-column>
             <el-table-column
+              prop="id"
+              label="物料编号">
+            </el-table-column>
+            <el-table-column
               prop="productId"
               label="物料编号">
             </el-table-column>
@@ -188,6 +192,12 @@
                 {{addmodulemount*scope.row.costPrice}}
               </template>
             </el-table-column>
+            <el-table-column
+              label="操作">
+              <template slot-scope="scope">
+                <a href="#" @click.prevent='del(index)'>删除</a>
+              </template></el-table-column>
+
           </el-table>
         </div>
 
@@ -211,7 +221,7 @@
 
         <div>
           <el-button @click="addwuliao">添加物料</el-button>
-          <el-button @click="scmodule">删除物料</el-button>
+          <!--<el-button @click="scmodule">删除物料</el-button>-->
         </div>
 
       </el-form>
@@ -317,6 +327,8 @@
         scFrom:{},
         manufactureData:[],
         options:[],
+        index:"",
+        cp:{},
         designer:"jj",
         value:"",
         pageno: 1,
@@ -380,18 +392,19 @@
       },
       addwuliao(){
         this.tjmoduletb1 = true;
-      },
-      //添加物料
-      tjmoduletb(){
         var _this = this;
         this.tjmoduletb1 = true;
         //异步查询所有物料
-        this.$axios.post("/dModuleDetails/queryallDModule").then(function (response) {
+        this.$axios.post("/dModule/queryallwl").then(function (response) {
           _this.manufactureData = response.data.records;
         }).catch();
       },
       tjwl(row){
         this.scgxtableData.push(row);
+      },
+      qx(){
+        this.zdwinshow = false;
+        this.scgxtableData=[];
       },
       handleSizeChange(val) {  //页size变更
         this.pagesize = val;
@@ -410,23 +423,59 @@
         this.$refs.productFrom.resetFields()
         this.dialogVisible = false;
       },
-      zd(id){
+      addmodule(){
+
+        var _this = this;
+        var arr = this.scgxtableData;
+        let newArr = [];
+
+        arr.forEach(function (item,index) {
+          console.log(item);
+          var wl = {};
+          wl.productId=item.productId
+          wl.id=item.id
+          wl.productName=item.productName
+          wl.designer=item.designer
+          wl.subtotal=item.subtotal
+          wl.productId1=_this.cp.productId
+          wl.productName1=_this.cp.productName
+          wl.designer1=_this.cp.designer
+          wl.register1=_this.cp.register
+          wl.register=item.register
+          wl.type=item.type
+          wl.productDescribe=item.productDescribe
+          wl.amountUnit=item.amountUnit
+          wl.amount=_this.addmodulemount
+          wl.costPrice=item.costPrice
+          newArr.push(wl)
+        })
+        this.$axios.post("/dModule/addModule",JSON.stringify(newArr)
+          ,{headers:{"Content-Type":"application/json"}}
+        ).then(function (response) {}).catch();
+        this.getdata();
+        this.$message({
+          type: 'success',
+          message: '制定成功!'
+        });
+        this.scgxtableData=[];
+        this.zdwinshow = false;
+
+      },
+      zd(row){
         this.zdwinshow = true;
+        this.cp=row;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("id",id);
+        params.append("id",row.productId);
         this.$axios.post("/dFile/selectById",params).then(function (response) {
           _this.scFrom=response.data;
         }).catch();
       },
       tjgx(row){
         this.scgxtableData.push(row);
-      },
-      scmodule(){
-
+      },del(index) {//删除
+        this.scgxtableData.splice(index, 1);
       }
-    },addmodule(){
-
     },
     created() {
       this.getdata();

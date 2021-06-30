@@ -48,7 +48,15 @@
     <!--表格 -->
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="payId" label="出库单编号" width="180"></el-table-column>
-      <el-table-column prop="reason" label="出库理由"></el-table-column>
+      <el-table-column prop="reason" label="出库理由">
+        <template slot-scope="scope">
+          <span v-if="scope.row.reason =='C002-1'" >生产入库</span>
+          <span v-if="scope.row.reason =='C002-2'">库存开始</span>
+          <span v-if="scope.row.reason =='C002-3'" >赠送</span>
+          <span v-if="scope.row.reason =='C002-3'" >内部归还</span>
+          <span v-if="scope.row.reason =='C002-3'" >其他归还</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="reasonexact" label="出库详细理由"></el-table-column>
       <el-table-column prop="registerTime" label="登记时间"></el-table-column>
       <el-table-column prop="amountSum" label="总件数"></el-table-column>

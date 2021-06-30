@@ -153,25 +153,25 @@
                 <el-table-column
                   label="工时数">
                   <template slot-scope="scope">
-                    <input class="mbk" v-model="labourHourAmount" type="text"></input>
+                    <input class="mbk" v-model="scope.row.labourHourAmount" type="text"></input>
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="工时单位">
                   <template slot-scope="scope">
-                    <input class="mbk" v-model="amountUnit" type="text"></input>
+                    <input class="mbk" v-model="scope.row.amountUnit" type="text"></input>
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="单位工时成本">
                   <template slot-scope="scope">
-                    <input class="mbk" v-model="costPrice" type="text"></input>
+                    <input class="mbk" v-model="scope.row.costPrice" type="text"></input>
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="工时成本小计(元)">
                   <template slot-scope="scope">
-                    {{labourHourAmount*costPrice}}
+                    {{scope.row.labourHourAmount*scope.row.costPrice}}
                   </template>
                 </el-table-column>
               </el-table>
@@ -381,9 +381,9 @@
                           "detailsNumber":item.id,
                           "procedureId":item.typeId,
                           "procedureName":item.typeName,
-                          "labourHourAmount":this.labourHourAmount,
+                          "labourHourAmount":this.scgxtableData[index].labourHourAmount,
                           "amountUnit":this.amountUnit,
-                          "costPrice":this.costPrice,
+                          "costPrice":this.scgxtableData[index].costPrice,
                           "productId1":this.scFrom.productId,
                           "productName1":this.scFrom.productName,
                           "designer1":this.designer
