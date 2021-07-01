@@ -186,7 +186,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="editwinshow = false">取 消</el-button>
-        <el-button @click="motaiTijiao" >提交</el-button>
+        <el-button @click="jiaojiesltj" >提交</el-button>
       </div>
 
     </el-dialog>
@@ -394,6 +394,7 @@
           this.$message.error("你确定合格数量大于实际数量");
           return false;
         }
+        console.log(this.gongxu.procedureId==this.gxtable[this.gxtable.length-1].procedureId)
         if(this.gongxu.procedureId==this.gxtable[this.gxtable.length-1].procedureId){
           var _this = this;
           var params = new URLSearchParams();
@@ -414,7 +415,7 @@
               });
             }
           })
-        }
+        }else {
         var _this = this;
         var params = new URLSearchParams();
         params.append("id",this.gongxu.id);
@@ -439,9 +440,8 @@
           //刷新表格数据
           _this.getdata();
         }).catch();
+        }
       },
-
-
       handleClose(){
         this.table=false;
       },

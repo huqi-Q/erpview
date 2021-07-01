@@ -175,7 +175,7 @@
           scFrom:{},
           applyId:"",
           pagesize: 5,
-          total: 0,
+          total: 1,
           firstKindId:"",
           firstKindName:"",
           designer:"hh",

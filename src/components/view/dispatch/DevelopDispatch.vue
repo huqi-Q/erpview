@@ -284,7 +284,7 @@
         pagesize: 5,
         sjId:"",
         wlData:[],
-        total: 0,
+        total: 1,
         firstKindId:"",
         firstKindName:"",
         tname:"",

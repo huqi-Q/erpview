@@ -278,7 +278,7 @@
         sjId:"",
         pageno: 1,
         pagesize: 5,
-        total: 0,
+        total: 1,
         firstKindId:"",
         firstKindName:"",
         name:"",
@@ -356,8 +356,8 @@
               message: '审核成功!'
             });
           }
-          this.gxwinshow=false;
-          this.getdata();
+          _this.gxwinshow=false;
+          _this.getdata();
 
         }).catch();
       },

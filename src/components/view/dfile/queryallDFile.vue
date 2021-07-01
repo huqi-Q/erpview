@@ -139,7 +139,7 @@
                     value:"",
                     pageno: 1,
                     pagesize: 5,
-                    total: 0,
+                    total: 1,
                     firstKindId:"",
                     firstKindName:"",
                     shortcuts: [{

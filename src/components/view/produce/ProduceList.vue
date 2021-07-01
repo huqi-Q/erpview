@@ -37,23 +37,23 @@
       <el-table-column prop="testedAmount" label="合格数量"></el-table-column>
       <el-table-column label="登记审核状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.checkTag==0" style="color:orange">等待审核</span>
-          <span v-else-if="scope.row.checkTag==1" style="color:green">审核通过</span>
+          <span v-if="scope.row.checkTag=='S001-0'" style="color:orange">等待审核</span>
+          <span v-else-if="scope.row.checkTag=='S001-1'" style="color:green">审核通过</span>
           <span v-else="" style="color:red">审核未通过</span>
         </template>
       </el-table-column>
       <el-table-column label="交接审核状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.manufactureProcedureTag==0" style="color:red">待登记</span>
-          <span v-else-if="scope.row.manufactureProcedureTag==1" style="color:orange">未审核</span>
+          <span v-if="scope.row.manufactureProcedureTag=='S002-0'" style="color:red">待登记</span>
+          <span v-else-if="scope.row.manufactureProcedureTag=='S002-1'" style="color:orange">未审核</span>
           <span v-else="" style="color:green">已完工</span>
         </template>
       </el-table-column>
-      <el-table-column  label="审核">
-        <template slot-scope="scope">
-          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row.id)" plain>详细</el-button>
-        </template>
-      </el-table-column>
+<!--      <el-table-column  label="审核">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button type="info" icon="el-icon-view" @click="openeditwin(scope.row.id)" plain>详细</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <!-- 分页  -->
@@ -205,7 +205,7 @@
         tableData: [],//表格数据
         pageno: 1,//页号
         pagesize: 5,//页大小
-        total: 0,//总数据量
+        total: 1,//总数据量
         editform: {},//工序数据
         gongxu: {},//打开抽屉保存当前工序
         editwinshow: false,//添加的模态框
@@ -218,29 +218,22 @@
       onSubmit() {//查询
         this.getdata();
       },
-
-      getcaidan() {//查询菜单
-        this.$axios.get("Config/queryAll").then((response) => {
-          this.chafrom.options = response.data;
-        }).catch();
-      },
-
       getdata() {   //获取数据
         var _this = this;
         var params = new URLSearchParams();
         params.append("pageno", this.pageno);//页号
         params.append("pagesize", this.pagesize);//页大小
-        params.append("tjname", this.chafrom.tjname);//产品名称
-        params.append("firskindname", this.chafrom.value[0]);//I级菜单名称
-        params.append("secondkindname", this.chafrom.value[1]);//II级菜单名称
-        params.append("thirdkindname", this.chafrom.value[2]);//III级菜单名称
-
-        if (this.chafrom.registerTime != "") {//时间
-          params.append("starttime", this.chafrom.registerTime[0]);//开始时间()
-          params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
-        }
+        // params.append("tjname", this.chafrom.tjname);//产品名称
+        // params.append("firskindname", this.chafrom.value[0]);//I级菜单名称
+        // params.append("secondkindname", this.chafrom.value[1]);//II级菜单名称
+        // params.append("thirdkindname", this.chafrom.value[2]);//III级菜单名称
+        //
+        // if (this.chafrom.registerTime != "") {//时间
+        //   params.append("starttime", this.chafrom.registerTime[0]);//开始时间()
+        //   params.append("overtime", this.chafrom.registerTime[1]);//结束时间()
+        // }
         // 请求地址
-        this.$axios.post("Manufacture/selectSCAll", params).then(function (response) {
+        this.$axios.post("mManufacture/selectSCAll", params).then(function (response) {
           _this.tableData = response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -262,7 +255,7 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("id", id);
-        this.$axios.post("Manufacture/SelectId", params).then(function (response) {
+        this.$axios.post("mManufacture/SelectId", params).then(function (response) {
           _this.editform = response.data;
         }).catch();
       },
@@ -345,7 +338,6 @@
       },
     },
     created(){
-      this.getcaidan();
       this.getdata();
     },
   }
